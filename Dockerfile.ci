@@ -1,42 +1,40 @@
-# ─── 1. Base with PNPM ─────────────────────────────────────
-FROM node:20-slim AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-
-# ─── 2. Install only prod deps via fetch ──────────────────
-FROM base AS prod-deps
-WORKDIR /app
-
-# copy lockfile and minimal manifests
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
-# warm the cache with only prod deps
-RUN pnpm fetch --prod
-
-# ─── 3. Build all workspaces ───────────────────────────────
-FROM prod-deps AS build
-# now bring in source
-COPY . .
-# compile every project
-RUN pnpm -r build
-
-# ─── 4-a. Final image: Backend ────────────────────────────
-FROM base AS backend
-WORKDIR /app
-# copy node_modules & build output for backend only
-COPY --from=prod-deps /app/node_modules ./node_modules
-COPY --from=build     /app/apps/backend/dist ./dist
-COPY --from=build     /app/apps/backend/package.json ./package.json
-EXPOSE 3000
-CMD ["node", "dist/main.js"]
-
-# ─── 4-b. Final image: Frontend ───────────────────────────
-FROM base AS frontend
-WORKDIR /app
-COPY --from=prod-deps /app/node_modules ./node_modules
-COPY --from=build     /app/apps/frontend/dist  ./dist
-COPY --from=build     /app/apps/frontend/package.json ./package.json
-# serve static files
-RUN npm install --global http-server
-EXPOSE 8080
-CMD ["http-server", "dist", "-p", "8080", "-a", "0.0.0.0"]
+# ---------- 1. common base ----------
+    FROM node:20-slim AS base
+    ENV PNPM_HOME="/pnpm"
+    ENV PNPM_STORE_PATH="/pnpm/store"  
+    ENV PATH="$PNPM_HOME:$PATH"
+    RUN corepack enable
+    
+    # ---------- 2. dependencies layer ----------
+    FROM base AS deps
+    WORKDIR /workspace
+    COPY pnpm-lock.yaml ./
+    # ⬇️  fetch EVERYTHING, not just prod
+    RUN pnpm fetch          #  (remove --prod)
+    
+    # ---------- 3. build layer ----------
+    FROM base AS build
+    WORKDIR /workspace
+    COPY --from=deps /pnpm/store /pnpm/store
+    COPY . .
+    RUN pnpm install --offline --frozen-lockfile
+    RUN pnpm -r build
+    RUN pnpm deploy --filter=backend --prod /prod/backend
+    RUN pnpm deploy --filter=frontend --prod /prod/frontend
+    
+    # ---------- 4. runtime: backend ----------
+    FROM base AS backend
+    WORKDIR /prod/backend
+    COPY --from=build /prod/backend ./
+    EXPOSE 3000
+    CMD ["pnpm", "start"]
+    
+    # ---------- 5. runtime: frontend ----------
+    FROM base AS frontend
+    WORKDIR /prod/frontend
+    COPY --from=build /prod/frontend ./
+    # Install a static file server using the cached pnpm store
+    RUN pnpm add -g http-server     # or switch to `CMD pnpm dlx ...` and drop this line
+    EXPOSE 8080
+    CMD ["http-server", "dist", "-p", "8080"]
+    
