@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "dev": "pnpm -r --parallel dev",
+    "start":"pnpm -r start",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "format": "pnpm -r format",
@@ -20,17 +21,7 @@
     "start:temporal": "pnpm --filter @my/temporal-workflows dev"
   },
   "devDependencies": {
-    "typescript": "^5.5.0",
-    "@commitlint/cli": "^19.2.2",
-    "@commitlint/config-conventional": "^19.2.2",
-    "changesets": "^2.30.0",
-    "eslint": "^9.1.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-unused-imports": "^3.2.0",
-    "husky": "^9.0.10",
-    "lint-staged": "^15.2.0",
-    "prettier": "^3.3.1"
+    "typescript": "^5.5.0"
   },
   "keywords": [],
   "author": "",

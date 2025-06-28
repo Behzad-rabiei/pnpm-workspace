@@ -1,3 +1,7 @@
 packages:
-  - "packages/*"
-  - "apps/*"
+    - 'packages/*'
+    - 'apps/*'
+
+injectWorkspacePackages: true
+syncInjectedDepsAfterScripts:
+    - build # copy fresh build output during `pnpm deploy`

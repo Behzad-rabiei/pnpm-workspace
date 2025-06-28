@@ -1,0 +1,33 @@
+# Node modules & lockfiles
+node_modules/
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+**/dist/
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor/OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+.env                # if you keep a root env
+*.local.env
+
+# Husky
+.husky/
+
+# Changesets
+.changeset/
+
+# Coverage
+coverage/
