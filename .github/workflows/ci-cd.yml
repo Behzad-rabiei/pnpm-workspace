@@ -8,7 +8,7 @@ on:
 
 jobs:
     build:
-        name: build
+        name: Build Packages
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -62,7 +62,7 @@ jobs:
                   target: backend
                   push: true
                   tags: |
-                      ghcr.io/${{ github.repository_owner }}/pnpm-workspace/backend:latest
+                      ghcr.io/${{ toLower(github.repository) }}/backend:latest
 
             - name: Build & Push Frontend image
               uses: docker/build-push-action@v4
@@ -72,4 +72,4 @@ jobs:
                   target: frontend
                   push: true
                   tags: |
-                      ghcr.io/${{ github.repository_owner }}/pnpm-workspace/frontend:latest
+                      ghcr.io/${{ toLower(github.repository) }}/frontend:latest
