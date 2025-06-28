@@ -8,7 +8,7 @@ on:
 
 jobs:
     build:
-        name: Build
+        name: build
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -27,7 +27,7 @@ jobs:
 
     build-and-push-images:
         name: Build & Push Docker Images
-        needs: lint-test-build
+        needs: build
         runs-on: ubuntu-latest
         permissions:
             contents: write
