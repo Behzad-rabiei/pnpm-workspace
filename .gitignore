@@ -27,7 +27,7 @@ docker-compose.override.yml
 .husky/
 
 # Changesets
-.changeset/
+changeset/
 
 # Coverage
 coverage/

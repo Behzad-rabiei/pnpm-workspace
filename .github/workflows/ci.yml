@@ -50,7 +50,7 @@ jobs:
               uses: docker/build-push-action@v4
               with:
                   context: .
-                  file: Dockerfile.ci
+                  file: Dockerfile
                   target: backend
                   push: true
                   tags: |
@@ -60,7 +60,7 @@ jobs:
               uses: docker/build-push-action@v4
               with:
                   context: .
-                  file: Dockerfile.ci
+                  file: Dockerfile
                   target: frontend
                   push: true
                   tags: |
