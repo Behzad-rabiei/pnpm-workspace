@@ -1,20 +1,26 @@
 version: '3.9'
 
 services:
-    backend:
+    api:
         build:
-            context: . # repo root
-            dockerfile: Dockerfile # the file we wrote earlier
-            target: backend # <- name of the final stage
+            context: .
+            dockerfile: Dockerfile
+            target: backend
         container_name: backend
         ports:
             - '3000:3000'
 
-    # frontend:
-    #     build:
-    #         context: .
-    #         dockerfile: Dockerfile
-    #         target: frontend # <- name of the final stage
-    #     container_name: frontend
-    #     ports:
-    #         - '8080:8080' # browser → container:port 8080
+    ui:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: ui
+        container_name: ui
+        ports:
+            - '8080:8080'
+    workflows:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: workflows
+        container_name: workflows
