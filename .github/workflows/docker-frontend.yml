@@ -11,7 +11,7 @@ jobs:
         uses: ./.github/workflows/reusable-docker.yml
         with:
             target: frontend
-            image-name: ghcr.io/${{ github.repository_owner }}/frontend
+            image-name: ghcr.io/behzad/frontend
             image-tags: |
                 ghcr.io/behzad/frontend:latest
                 ghcr.io/behzad/frontend:${{ github.sha }}
