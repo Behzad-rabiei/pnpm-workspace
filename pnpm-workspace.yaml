@@ -4,4 +4,4 @@ packages:
 
 injectWorkspacePackages: true
 syncInjectedDepsAfterScripts:
-    - build # copy fresh build output during `pnpm deploy`
+    - build 
