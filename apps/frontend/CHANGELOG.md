@@ -1,5 +1,13 @@
 # @togethercrew/frontend
 
+## 1.0.3
+
+### Patch Changes
+
+- 12996a0: wq
+- Updated dependencies [12996a0]
+  - @togethercrew/reputation-score@1.0.3
+
 ## 1.0.2
 
 ### Patch Changes
