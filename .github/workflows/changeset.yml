@@ -24,9 +24,7 @@ jobs:
             - name: Create pull request
               uses: changesets/action@v1
               with:
-                  publish: pnpm tag
                   commit: 'Release: Version Packages'
                   title: 'Release: Version Packages'
-                  createGithubReleases: true
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
