@@ -1,5 +1,11 @@
 # @togethercrew/reputation-score
 
+## 1.0.1
+
+### Patch Changes
+
+- 159eddf: nothing to say
+
 ## 1.0.0
 
 ### Major Changes

@@ -1,5 +1,13 @@
 # @togethercrew/frontend
 
+## 1.0.1
+
+### Patch Changes
+
+- 159eddf: nothing to say
+- Updated dependencies [159eddf]
+  - @togethercrew/reputation-score@1.0.1
+
 ## 1.0.0
 
 ### Major Changes
