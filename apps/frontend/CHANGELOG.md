@@ -1,5 +1,17 @@
 # @togethercrew/frontend
 
+## 1.0.2
+
+### Patch Changes
+
+- e0d20d8: nothing
+- da25862: nothing
+- cd13853: ds
+- Updated dependencies [e0d20d8]
+- Updated dependencies [da25862]
+- Updated dependencies [cd13853]
+  - @togethercrew/reputation-score@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes
