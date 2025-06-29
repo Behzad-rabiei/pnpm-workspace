@@ -1,5 +1,13 @@
 # @togethercrew/frontend
 
+## 1.0.4
+
+### Patch Changes
+
+- f648530: d
+- Updated dependencies [f648530]
+  - @togethercrew/reputation-score@1.0.4
+
 ## 1.0.3
 
 ### Patch Changes
