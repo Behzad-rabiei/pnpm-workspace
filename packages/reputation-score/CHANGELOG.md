@@ -1,5 +1,13 @@
 # @togethercrew/reputation-score
 
+## 1.0.2
+
+### Patch Changes
+
+- e0d20d8: nothing
+- da25862: nothing
+- cd13853: ds
+
 ## 1.0.1
 
 ### Patch Changes
