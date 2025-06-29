@@ -1,5 +1,11 @@
 # @togethercrew/reputation-score
 
+## 1.0.4
+
+### Patch Changes
+
+- f648530: d
+
 ## 1.0.3
 
 ### Patch Changes
