@@ -1,0 +1,27 @@
+{
+    "name": "@reptuo/reputation-algorithms",
+    "version": "0.0.0",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "dev": "tsx watch src/index.ts",
+        "lint": "eslint src --ext .ts",
+        "format": "prettier --write src/**/*.ts",
+        "test": "echo \"no tests yet\""
+    },
+    "devDependencies": {
+        "tsx": "^4.7.0"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "packageManager": "pnpm@10.12.4"
+}

@@ -1,15 +1,8 @@
 {
-    "name": "@togethercrew/reputation-score",
-    "version": "1.0.4",
+    "name": "@reputo/workflows",
+    "version": "1.0.0",
+    "description": "",
     "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "exports": {
-        ".": {
-            "import": "./dist/index.js",
-            "require": "./dist/index.js",
-            "types": "./dist/index.d.ts"
-        }
-    },
     "scripts": {
         "build": "tsc -p tsconfig.json",
         "dev": "tsx watch src/index.ts",

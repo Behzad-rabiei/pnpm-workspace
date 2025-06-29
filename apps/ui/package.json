@@ -1,5 +1,5 @@
 {
-    "name": "@togethercrew/frontend",
+    "name": "@reputo/ui",
     "private": true,
     "version": "1.0.4",
     "type": "module",
@@ -11,7 +11,7 @@
         "start": "vite preview"
     },
     "dependencies": {
-        "@togethercrew/reputation-score": "workspace:*",
+        "@reptuo/reputation-algorithms": "workspace:*",
         "react": "^19.1.0",
         "react-dom": "^19.1.0"
     },
