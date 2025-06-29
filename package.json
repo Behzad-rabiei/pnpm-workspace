@@ -9,18 +9,18 @@
   ],
   "scripts": {
     "dev": "pnpm -r --parallel dev",
-    "start":"pnpm -r start",
+    "start": "pnpm -r start",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "format": "pnpm -r format",
     "test": "pnpm -r test",
     "changeset": "changeset",
-    "release": "changeset publish",
     "start:backend": "pnpm --filter @my/backend dev",
     "start:frontend": "pnpm --filter @my/frontend dev",
     "start:temporal": "pnpm --filter @my/temporal-workflows dev"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.5",
     "typescript": "^5.5.0"
   },
   "keywords": [],
