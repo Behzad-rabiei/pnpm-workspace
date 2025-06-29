@@ -3,7 +3,7 @@ import { helloWorld } from '@reptuo/reputation-algorithms';
 @Injectable()
 export class AppService {
   getHello(): string {
-    console.log(helloWorld('NestJS!'));
+    console.log(helloWorld('NestJS!]'));
     return 'Hello World!';
   }
 }
