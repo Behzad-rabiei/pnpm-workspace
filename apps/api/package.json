@@ -1,5 +1,5 @@
 {
-  "name": "@togethercrew/backend",
+  "name": "@reputo/api",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -21,7 +21,7 @@
     "dev": "pnpm run start:dev"
   },
   "dependencies": {
-    "@togethercrew/reputation-score": "workspace:*",
+    "@reptuo/reputation-algorithms": "workspace:*",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
