@@ -1,0 +1,27 @@
+name: Push Docker images
+on:
+  push:
+    branches: [main]
+    tags: ["v*.*.*"]
+jobs:
+  versions:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.backend.outputs.v }}
+      frontend: ${{ steps.frontend.outputs.v }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: backend
+        run: echo "v=$(jq -r .version packages/backend/package.json)" >> $GITHUB_OUTPUT
+      - id: frontend
+        run: echo "v=$(jq -r .version packages/frontend/package.json)" >> $GITHUB_OUTPUT
+
+  push-backend:
+    needs: versions
+    uses: ./.github/workflows/_docker-build.yml
+    with: { target: backend, version: ${{ needs.versions.outputs.backend }}, push: true }
+
+  push-frontend:
+    needs: versions
+    uses: ./.github/workflows/_docker-build.yml
+    with: { target: frontend, version: ${{ needs.versions.outputs.frontend }}, push: true }
