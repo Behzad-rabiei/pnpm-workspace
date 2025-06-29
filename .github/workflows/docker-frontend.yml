@@ -1,5 +1,6 @@
-# docker-frontend.yml
+# .github/workflows/docker-frontend.yml
 name: Docker / Front-end Image
+
 on:
     push:
         branches: [main]
@@ -11,9 +12,6 @@ jobs:
         uses: ./.github/workflows/reusable-docker.yml
         with:
             target: frontend
-            image-name: ghcr.io/behzad/frontend
-            image-tags: |
-                ghcr.io/behzad/frontend:latest
-                ghcr.io/behzad/frontend:${{ github.sha }}
+            image-name: ghcr.io/${{ github.repository_owner }}/frontend
         secrets:
             GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
