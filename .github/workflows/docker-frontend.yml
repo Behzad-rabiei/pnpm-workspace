@@ -1,0 +1,19 @@
+# docker-frontend.yml
+name: Docker / Front-end Image
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    frontend:
+        uses: ./.github/workflows/reusable-docker.yml
+        with:
+            target: frontend
+            image-name: ghcr.io/${{ github.repository_owner }}/frontend
+            image-tags: |
+                ghcr.io/${{ github.repository_owner }}/frontend:latest
+                ghcr.io/${{ github.repository_owner }}/frontend:${{ github.sha }}
+        secrets:
+            GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
