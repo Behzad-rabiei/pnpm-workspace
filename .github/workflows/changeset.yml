@@ -1,3 +1,4 @@
+# .github/workflows/changeset-release.yml  (your current file)
 name: Changeset
 
 on:
@@ -24,7 +25,7 @@ jobs:
             - name: Create pull request
               uses: changesets/action@v1
               with:
-                  commit: 'Release: Version Packages'
+                  commit: 'Release: Version Packages [skip ci]'
                   title: 'Release: Version Packages'
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
