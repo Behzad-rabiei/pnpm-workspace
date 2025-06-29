@@ -15,6 +15,7 @@
     "format": "pnpm -r format",
     "test": "pnpm -r test",
     "changeset": "changeset",
+    "tag": "changeset tag" ,
     "start:backend": "pnpm --filter @my/backend dev",
     "start:frontend": "pnpm --filter @my/frontend dev",
     "start:temporal": "pnpm --filter @my/temporal-workflows dev"
