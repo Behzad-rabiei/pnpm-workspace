@@ -13,15 +13,23 @@
         "build": "pnpm -r build",
         "lint": "pnpm -r lint",
         "format": "pnpm -r format",
-        "test": "pnpm -r test",
         "changeset": "changeset",
         "start:backend": "pnpm --filter @my/backend dev",
         "start:frontend": "pnpm --filter @my/frontend dev",
-        "start:temporal": "pnpm --filter @my/temporal-workflows dev"
+        "start:temporal": "pnpm --filter @my/temporal-workflows dev",
+        "test": "vitest",            
+        "test:ci": "vitest run --coverage",
+        "test:ui": "vitest --ui"
+        
+        
     },
     "devDependencies": {
         "@changesets/cli": "^2.29.5",
-        "typescript": "^5.5.0"
+        "@vitest/coverage-v8": "^3.2.4",
+        "@vitest/ui": "^3.2.4",
+        "typescript": "^5.5.0",
+        "vite-tsconfig-paths": "^5.1.4",
+        "vitest": "^3.2.4"
     },
     "keywords": [],
     "author": "",
