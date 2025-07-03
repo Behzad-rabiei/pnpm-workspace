@@ -1,26 +1,26 @@
 version: '3.9'
 
 services:
-    api:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            target: backend
-        container_name: backend
-        ports:
-            - '3000:3000'
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    container_name: backend
+    ports:
+      - '3000:3000'
 
-    ui:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            target: ui
-        container_name: ui
-        ports:
-            - '8080:8080'
-    workflows:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            target: workflows
-        container_name: workflows
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ui
+    container_name: ui
+    ports:
+      - '8080:8080'
+  workflows:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: workflows
+    container_name: workflows

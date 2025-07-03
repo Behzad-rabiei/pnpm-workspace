@@ -5,4 +5,10 @@ describe('API getHello', () => {
   it('returns greeting', () => {
     expect(getHello()).toBe('Hello World');
   });
+  it('returns greeting', () => {
+    expect(getHello()).toBe('Hello World');
+  });
+  it('returns greeting', () => {
+    expect(getHello()).toBe('Hello World');
+  });
 });
