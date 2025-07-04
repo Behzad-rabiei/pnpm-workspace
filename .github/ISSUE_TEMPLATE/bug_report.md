@@ -28,9 +28,9 @@ If applicable, add screenshots or terminal logs to help explain your problem.
 
 ### Environment
 
--   OS: [e.g. macOS 12.1]
--   Browser / Node / Docker / etc.: [e.g. Chrome 96, Node v18]
--   Version: [e.g. v1.2.3]
+- OS: [e.g. macOS 12.1]
+- Browser / Node / Docker / etc.: [e.g. Chrome 96, Node v18]
+- Version: [e.g. v1.2.3]
 
 ### Additional context
 

@@ -1,14 +1,6 @@
-import { mergeConfig, defineProject } from 'vitest/config'
-import shared from '../../vitest.shared'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-export default mergeConfig(
-  shared,
-  defineProject({
-    test: {
-      name: 'ui',
-      environment: 'jsdom',
-      include: ['src/**/*.{test,spec}.{ts,tsx}'],
-      setupFiles: ['vitest.setup.ts'],
-    },
-  }),
-)
+export default defineConfig({
+  plugins: [react()],
+});
