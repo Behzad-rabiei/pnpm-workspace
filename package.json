@@ -14,7 +14,6 @@
     "check": "pnpm -r check",
     "lint": "pnpm -r lint",
     "format": "pnpm -r format",
-    "ci": "pnpm check && pnpm build && pnpm test",
     "changeset": "changeset",
     "start:backend": "pnpm --filter @my/backend dev",
     "start:frontend": "pnpm --filter @my/frontend dev",

@@ -16,16 +16,13 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        node-version: [20] # add 18/22 if you want more coverage
+        node-version: [20] 
     steps:
       - uses: actions/checkout@v4
 
-      # 1️⃣ install pnpm first – makes the CLI available for the cache step
       - uses: pnpm/action-setup@v4
         with:
-          run_install: false # we'll run install explicitly
-
-      # 2️⃣ now install Node and restore the pnpm store cache
+          run_install: false 
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
