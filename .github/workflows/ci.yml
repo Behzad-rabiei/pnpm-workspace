@@ -12,50 +12,89 @@ concurrency:
 
 jobs:
   code-quality:
-    name: '☑️  Code Quality'
+    name: '☑️ Code Quality'
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        node-version: [20]
+        node-version: [20] # add 18 or 22-current if you want more coverage
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
         uses: actions/setup-node@v4
-        with: { node-version: ${{ matrix.node-version }} }
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm # built-in cache for node_modules + pnpm store
+
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 9 # pin the latest stable pnpm
+          run_install: false # we’ll install manually next
+
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Lint / Type-check
         run: pnpm run check
+
   test:
-    name: "🧪 Test"
-    needs: code-quality        
+    name: '🧪 Test'
+    needs: code-quality
     runs-on: ubuntu-22.04
     strategy:
       matrix:
         node-version: [20]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: ${{ matrix.node-version }} }
-      - uses: pnpm/action-setup@v4
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run test
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm run test
         env:
-          CI: "true"
+          CI: 'true'
 
   build:
-    name: '🏗️  Build'
-    needs: [code-quality, test] 
+    name: '🏗️ Build'
+    needs: [code-quality, test]
     runs-on: ubuntu-22.04
     strategy:
       matrix:
         node-version: [20]
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node 20
-      - uses: actions/setup-node@v4
-        with: { node-version: ${{ matrix.node-version }} }
-      - uses: pnpm/action-setup@v4
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run build
+      - name: Checkout
+        uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
 
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build package
+        run: pnpm run build
