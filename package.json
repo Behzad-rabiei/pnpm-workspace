@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "pnpm -r --parallel dev",
     "start": "pnpm -r --parallel start",
-    "build": "pnpm -r --parallel build",
+    "build": "pnpm -r build",
     "check": "pnpm -r --parallel check",
     "lint": "pnpm -r --parallel lint",
     "format": "pnpm -r --parallel format",
