@@ -1,58 +1,44 @@
+# Biome CLI 2.0.6, GitHub Action biomejs/setup-biome@v2
 name: Workspace CI
 
 on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-    build-workspace:
-        name: Build Workspace
-        runs-on: ubuntu-latest
+  build-workspace:
+    name: Build, Test & Lint
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v3
-              with:
-                  version: 10
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: '10'
 
-            - name: Build packages
-              run: pnpm -r build
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-            - name: Run tests
-              run: pnpm test
+      - name: Build packages
+        run: pnpm -r build
 
-            - name: Lint
-              run: pnpm lint
-    biome-check:
-      name: Run Biome CI
-      runs-on: ubuntu-latest
-      needs: build-workspace
+      - name: Run tests
+        run: pnpm test
 
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: 'latest'
 
-        - name: Setup pnpm
-          uses: pnpm/action-setup@v3
-          with:
-            version: '10'
-
-        - name: Install dependencies
-          run: pnpm install --frozen-lockfile
-
-        - name: Setup Biome
-          uses: biomejs/setup-biome@v2
-          with:
-            version: 'latest'
-
-        - name: Run Biome CI
-          run: biome ci .
-      
+      - name: Lint
+        run: pnpm lint
