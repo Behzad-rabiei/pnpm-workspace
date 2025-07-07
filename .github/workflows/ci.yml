@@ -12,25 +12,25 @@ concurrency:
 
 jobs:
   quality:
-    name: "☑️  Quality
+    name: '☑️  Quality'
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        node-version: [20, 22]          
+        node-version: [20, 22]
     steps:
-      - uses: actions/checkout@v4           
+      - uses: actions/checkout@v4
 
       - name: Use Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: pnpm                 
+          cache: pnpm
 
       - name: Install pnpm v10
         uses: pnpm/action-setup@v4
         with:
           version: 10.12.4
-          run_install: false           
+          run_install: false
 
       - name: Install dependencies (cached)
         run: pnpm install --frozen-lockfile --prefer-offline
@@ -42,7 +42,7 @@ jobs:
         run: pnpm run test
 
   build:
-    name: "🏗️  Build"
+    name: '🏗️  Build'
     needs: quality
     runs-on: ubuntu-22.04
     steps:
