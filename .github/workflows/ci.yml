@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  quality:
+  code-quality:
     name: '☑️  Code Quality'
     runs-on: ubuntu-22.04
     strategy:
@@ -19,41 +19,44 @@ jobs:
         node-version: [20]
     steps:
       - uses: actions/checkout@v4
-
-      - name: Use Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install pnpm
+          with: { node-version: ${{ matrix.node-version }} }
         uses: pnpm/action-setup@v4
-
-      - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Lint & format
         run: pnpm run check
-
-      - name: Unit tests
-        run: pnpm run test
-
-  build:
-    name: '🏗️  Build Workspace'
-    needs: quality
+  test:
+    name: "🧪 Test"
+    needs: code-quality        
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        node-version: [20]
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: ${{ matrix.node-version }} }
+      - uses: pnpm/action-setup@v4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test
+        env:
+          CI: "true"
 
+  build:
+    name: '🏗️  Build'
+    needs: [code-quality, test] 
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        node-version: [20]
+    steps:
+      - uses: actions/checkout@v4
       - name: Use Node 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      - uses: actions/setup-node@v4
+        with: { node-version: ${{ matrix.node-version }} }
+      - uses: pnpm/action-setup@v4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
 
-      - name: Build packages
-        run: pnpm run build
