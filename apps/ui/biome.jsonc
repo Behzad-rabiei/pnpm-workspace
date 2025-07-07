@@ -1,0 +1,11 @@
+{
+    "extends": "//",
+
+    "linter": {
+        "rules": {
+            "style": { "noNonNullAssertion": "warn" },
+            "a11y": { "useButtonType": "off" } // if you really don’t care
+        }
+    },
+    "javascript": { "jsxRuntime": "reactClassic" }
+}

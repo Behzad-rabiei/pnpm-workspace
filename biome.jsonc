@@ -1,0 +1,39 @@
+// Biome 2.0.6 – monorepo root
+{
+    "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+
+    /* ────── ✧  What files does Biome ever touch?  ✧ ──────
+       - Anything outside this list is completely invisible
+         to *all* Biome tools (linter, formatter, assist).
+       - Negated globs (`!…`) **must** be preceded by `"**"` first. */
+    "files": {
+        "includes": [
+            // source & config files we *do* care about
+            "**/*.{js,jsx,ts,tsx,cjs,mjs,json,jsonc}",
+            "**/*.md",
+            "**/*.yml",
+            // ignore heavy or generated stuff everywhere
+            "!**/node_modules/**",
+            "!**/dist/**",
+            "!**/coverage/**",
+            "!**/*.generated.*", // any code-gen artefact
+            "!**/vitest.config.ts" // any code-gen artefact
+        ]
+    },
+
+    /* ────── ✧  Lint settings  ✧ ────── */
+    "linter": {
+        "enabled": true,
+        "rules": { "recommended": true },
+        /* Extra filter just for the linter:
+         – we DO lint tests, but skip mocks/fixtures if you like */
+        "includes": ["**", "!**/fixtures/**", "!**/__mocks__/**"]
+    },
+
+    /* ────── ✧  Formatter style  ✧  (doc example) ────── */
+    "formatter": {
+        "lineWidth": 120,
+        "indentStyle": "space",
+        "indentWidth": 6
+    }
+}
