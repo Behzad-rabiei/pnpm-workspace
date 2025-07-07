@@ -1,7 +1,0 @@
-{
-      "extends": "//",
-
-      "javascript": {
-            "parser": { "unsafeParameterDecoratorsEnabled": true }
-      }
-}
