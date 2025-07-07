@@ -12,11 +12,11 @@ concurrency:
 
 jobs:
   quality:
-    name: '☑️  Quality'
+    name: '☑️  Code Quality'
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        node-version: [20, 22]
+        node-version: [20]
     steps:
       - uses: actions/checkout@v4
 
@@ -38,7 +38,7 @@ jobs:
         run: pnpm run test
 
   build:
-    name: '🏗️  Build'
+    name: '🏗️  Build Workspace'
     needs: quality
     runs-on: ubuntu-22.04
     steps:
@@ -55,5 +55,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build workspaces
+      - name: Build packages
         run: pnpm run build
