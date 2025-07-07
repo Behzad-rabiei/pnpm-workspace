@@ -1,7 +1,10 @@
 name: Workspace CI
+
 on:
-  push: { branches: [main] }
-  pull_request: { branches: [main] }
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   ci:
@@ -9,19 +12,16 @@ jobs:
     strategy:
       matrix: { node: [20] }
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: ${{ matrix.node }}
-          cache: pnpm
-          cache-dependency-path: '**/pnpm-lock.yaml'
+          version: 10
 
-      - uses: pnpm/action-setup@v4
-        with:
-          run_install: false
-
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Lint & Format
         run: pnpm run check
