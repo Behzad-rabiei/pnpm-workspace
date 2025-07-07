@@ -9,17 +9,16 @@
   ],
   "scripts": {
     "dev": "pnpm -r --parallel dev",
-    "start": "pnpm -r start",
-    "build": "pnpm -r build",
-    "check": "pnpm -r check",
-    "lint": "pnpm -r lint",
-    "format": "pnpm -r format",
+    "start": "pnpm -r --parallel start",
+    "build": "pnpm -r --parallel build",
+    "check": "pnpm -r --parallel check",
+    "lint": "pnpm -r --parallel lint",
+    "format": "pnpm -r --parallel format",
     "changeset": "changeset",
-    "start:backend": "pnpm --filter @my/backend dev",
-    "start:frontend": "pnpm --filter @my/frontend dev",
-    "start:temporal": "pnpm --filter @my/temporal-workflows dev",
-    "test": "vitest",
-    "test:ui": "vitest --ui"
+    "start:backend": "pnpm --filter @my/api dev",
+    "start:frontend": "pnpm --filter @my/ui dev",
+    "start:temporal": "pnpm --filter @my/workflows dev",
+    "test": "vitest"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.6",
