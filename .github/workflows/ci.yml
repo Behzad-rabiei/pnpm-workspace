@@ -25,13 +25,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install pnpm v10
+      - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10.12.4
           run_install: false
 
-      - name: Install dependencies (cached)
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: Lint & format
@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node 20 (build target)
+      - name: Use Node 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
