@@ -1,4 +1,13 @@
 {
+  "files": {
+    "includes": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "src/**/*.spec.ts",
+      "test/**/*.spec.ts"
+    ]
+  },
   "formatter": {
     "enabled": true,
     "formatWithErrors": false,

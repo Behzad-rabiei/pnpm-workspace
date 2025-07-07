@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('UI sanity check', () => {
   it('should pass a true assertion', () => {

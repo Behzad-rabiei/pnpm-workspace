@@ -1,4 +1,3 @@
-# Biome CLI 2.0.6, GitHub Action biomejs/setup-biome@v2
 name: Workspace CI
 
 on:
@@ -8,37 +7,47 @@ on:
     branches: [main]
 
 jobs:
-  build-workspace:
-    name: Build, Test & Lint
+  quality:
+    name: Code Quality
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: '10'
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+
+      - name: Run Biome checks
+        run: pnpm exec biome ci .
+
+  build-workspace:
+    name: Build & Test Workspace
+    needs: quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build packages
-        run: pnpm -r build
+        run: pnpm build
 
       - name: Run tests
         run: pnpm test
-
-      - name: Setup Biome
-        uses: biomejs/setup-biome@v2
-        with:
-          version: 'latest'
-
-      - name: Lint
-        run: pnpm lint

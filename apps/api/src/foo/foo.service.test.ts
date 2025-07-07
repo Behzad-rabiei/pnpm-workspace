@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing'
+import { beforeAll, describe, expect, it } from 'vitest'
 import { FooService } from './foo.service'
-import { expect, describe, it, beforeAll } from 'vitest'
 
 describe('FooService', () => {
   let service: FooService
