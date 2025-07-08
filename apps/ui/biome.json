@@ -2,32 +2,17 @@
   "root": false,
   "extends": "//",
   "files": {
-    "includes": [
-      "src/**/*.ts",
-      "src/**/*.tsx",
-      "test/**/*.ts",
-      "src/**/*.spec.ts",
-      "test/**/*.spec.ts"
-    ]
-  },
-  "formatter": {
-    "enabled": true,
-    "formatWithErrors": false,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineEnding": "lf",
-    "lineWidth": 80,
-    "attributePosition": "auto",
-    "bracketSameLine": false,
-    "bracketSpacing": true,
-    "expand": "auto",
-    "useEditorconfig": true
+    "includes": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts", "src/**/*.spec.ts", "test/**/*.spec.ts"]
   },
   "linter": {
     "rules": {
       "recommended": false,
-      "complexity": { "noUselessTypeConstraint": "error" },
-      "correctness": { "noUnusedVariables": "error" },
+      "complexity": {
+        "noUselessTypeConstraint": "error"
+      },
+      "correctness": {
+        "noUnusedVariables": "error"
+      },
       "style": {
         "noCommonJs": "error",
         "noNamespace": "error",
@@ -44,21 +29,6 @@
     },
     "includes": ["**", "!dist"]
   },
-  "javascript": {
-    "formatter": {
-      "jsxQuoteStyle": "double",
-      "quoteProperties": "asNeeded",
-      "trailingCommas": "all",
-      "semicolons": "asNeeded",
-      "arrowParentheses": "always",
-      "bracketSameLine": false,
-      "quoteStyle": "single",
-      "attributePosition": "auto",
-      "bracketSpacing": true
-    },
-    "globals": []
-  },
-  "html": { "formatter": { "selfCloseVoidElements": "always" } },
   "overrides": [
     {
       "includes": ["**/*.{ts,tsx}"],
@@ -126,12 +96,19 @@
         }
       }
     },
-    { "includes": ["**/*.{ts,tsx}"], "javascript": { "globals": [] } },
+    {
+      "includes": ["**/*.{ts,tsx}"],
+      "javascript": {
+        "globals": []
+      }
+    },
     {
       "includes": ["**/*.{ts,tsx}"],
       "linter": {
         "rules": {
-          "complexity": { "noArguments": "error" },
+          "complexity": {
+            "noArguments": "error"
+          },
           "correctness": {
             "noConstAssign": "off",
             "noGlobalObjectCalls": "off",
@@ -142,7 +119,9 @@
             "noUnreachable": "off",
             "noUnreachableSuper": "off"
           },
-          "style": { "useConst": "error" },
+          "style": {
+            "useConst": "error"
+          },
           "suspicious": {
             "noClassAssign": "off",
             "noDuplicateClassMembers": "off",
@@ -163,8 +142,12 @@
       "includes": ["**/*.{ts,tsx}"],
       "linter": {
         "rules": {
-          "complexity": { "noUselessTypeConstraint": "error" },
-          "correctness": { "noUnusedVariables": "error" },
+          "complexity": {
+            "noUselessTypeConstraint": "error"
+          },
+          "correctness": {
+            "noUnusedVariables": "error"
+          },
           "style": {
             "noCommonJs": "error",
             "noNamespace": "error",
@@ -192,7 +175,10 @@
         }
       }
     },
-    { "includes": ["**/*.{ts,tsx}"], "linter": { "rules": {} } },
+    {
+      "includes": ["**/*.{ts,tsx}"],
+      "linter": { "rules": {} }
+    },
     {
       "includes": ["**/*.{ts,tsx}"],
       "javascript": {
@@ -391,16 +377,22 @@
         }
       }
     },
-    { "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"] },
+    {
+      "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"]
+    },
     {
       "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"],
-      "javascript": { "globals": ["exports"] }
+      "javascript": {
+        "globals": ["exports"]
+      }
     },
     {
       "includes": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
       "linter": {
         "rules": {
-          "complexity": { "noArguments": "error" },
+          "complexity": {
+            "noArguments": "error"
+          },
           "correctness": {
             "noConstAssign": "off",
             "noGlobalObjectCalls": "off",
@@ -411,7 +403,9 @@
             "noUnreachable": "off",
             "noUnreachableSuper": "off"
           },
-          "style": { "useConst": "error" },
+          "style": {
+            "useConst": "error"
+          },
           "suspicious": {
             "noClassAssign": "off",
             "noDuplicateClassMembers": "off",
