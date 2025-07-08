@@ -2,26 +2,7 @@
   "root": false,
   "extends": "//",
   "files": {
-    "includes": [
-      "src/**/*.ts",
-      "src/**/*.tsx",
-      "test/**/*.ts",
-      "src/**/*.spec.ts",
-      "test/**/*.spec.ts"
-    ]
-  },
-  "formatter": {
-    "enabled": true,
-    "formatWithErrors": false,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineEnding": "lf",
-    "lineWidth": 80,
-    "attributePosition": "auto",
-    "bracketSameLine": false,
-    "bracketSpacing": true,
-    "expand": "auto",
-    "useEditorconfig": true
+    "includes": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts", "src/**/*.spec.ts", "test/**/*.spec.ts"]
   },
   "linter": {
     "rules": {
@@ -44,21 +25,6 @@
     },
     "includes": ["**", "!dist"]
   },
-  "javascript": {
-    "formatter": {
-      "jsxQuoteStyle": "double",
-      "quoteProperties": "asNeeded",
-      "trailingCommas": "all",
-      "semicolons": "asNeeded",
-      "arrowParentheses": "always",
-      "bracketSameLine": false,
-      "quoteStyle": "single",
-      "attributePosition": "auto",
-      "bracketSpacing": true
-    },
-    "globals": []
-  },
-  "html": { "formatter": { "selfCloseVoidElements": "always" } },
   "overrides": [
     {
       "includes": ["**/*.{ts,tsx}"],
