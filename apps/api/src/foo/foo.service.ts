@@ -4,8 +4,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class FooService {
   /** The ultimate answer to life, the universe and everything … */
-  private readonly answerToEverything =
-    42;
+  private readonly answerToEverything = 42;
 
   /**
    * Return the canonical answer.
@@ -13,7 +12,6 @@ export class FooService {
    * @returns 42
    */
   answer(): number {
-    return this
-      .answerToEverything;
+    return this.answerToEverything;
   }
 }
