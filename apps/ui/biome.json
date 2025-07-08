@@ -2,7 +2,13 @@
   "root": false,
   "extends": "//",
   "files": {
-    "includes": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts", "src/**/*.spec.ts", "test/**/*.spec.ts"]
+    "includes": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "src/**/*.spec.ts",
+      "test/**/*.spec.ts"
+    ]
   },
   "linter": {
     "rules": {
@@ -31,7 +37,9 @@
   },
   "overrides": [
     {
-      "includes": ["**/*.{ts,tsx}"],
+      "includes": [
+        "**/*.{ts,tsx}"
+      ],
       "linter": {
         "rules": {
           "complexity": {
@@ -97,11 +105,17 @@
       }
     },
     {
-      "includes": ["**/*.{ts,tsx}"],
-      "javascript": { "globals": [] }
+      "includes": [
+        "**/*.{ts,tsx}"
+      ],
+      "javascript": {
+        "globals": []
+      }
     },
     {
-      "includes": ["**/*.{ts,tsx}"],
+      "includes": [
+        "**/*.{ts,tsx}"
+      ],
       "linter": {
         "rules": {
           "complexity": {
@@ -137,7 +151,9 @@
       }
     },
     {
-      "includes": ["**/*.{ts,tsx}"],
+      "includes": [
+        "**/*.{ts,tsx}"
+      ],
       "linter": {
         "rules": {
           "complexity": {
@@ -163,7 +179,9 @@
       }
     },
     {
-      "includes": ["**/*.{ts,tsx}"],
+      "includes": [
+        "**/*.{ts,tsx}"
+      ],
       "linter": {
         "rules": {
           "correctness": {
@@ -174,11 +192,15 @@
       }
     },
     {
-      "includes": ["**/*.{ts,tsx}"],
+      "includes": [
+        "**/*.{ts,tsx}"
+      ],
       "linter": { "rules": {} }
     },
     {
-      "includes": ["**/*.{ts,tsx}"],
+      "includes": [
+        "**/*.{ts,tsx}"
+      ],
       "javascript": {
         "globals": [
           "onanimationend",
@@ -310,7 +332,9 @@
       }
     },
     {
-      "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"],
+      "includes": [
+        "**/*.{js,mjs,cjs,ts,mts,cts}"
+      ],
       "linter": {
         "rules": {
           "complexity": {
@@ -376,16 +400,25 @@
       }
     },
     {
-      "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"]
+      "includes": [
+        "**/*.{js,mjs,cjs,ts,mts,cts}"
+      ]
     },
     {
-      "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"],
+      "includes": [
+        "**/*.{js,mjs,cjs,ts,mts,cts}"
+      ],
       "javascript": {
         "globals": ["exports"]
       }
     },
     {
-      "includes": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
+      "includes": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.mts",
+        "**/*.cts"
+      ],
       "linter": {
         "rules": {
           "complexity": {
