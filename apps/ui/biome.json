@@ -2,13 +2,7 @@
   "root": false,
   "extends": "//",
   "files": {
-    "includes": [
-      "src/**/*.ts",
-      "src/**/*.tsx",
-      "test/**/*.ts",
-      "src/**/*.spec.ts",
-      "test/**/*.spec.ts"
-    ]
+    "includes": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts", "src/**/*.spec.ts", "test/**/*.spec.ts"]
   },
   "linter": {
     "rules": {
@@ -316,9 +310,7 @@
       }
     },
     {
-      "includes": [
-        "**/*.{js,mjs,cjs,ts,mts,cts}"
-      ],
+      "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"],
       "linter": {
         "rules": {
           "complexity": {
@@ -384,25 +376,16 @@
       }
     },
     {
-      "includes": [
-        "**/*.{js,mjs,cjs,ts,mts,cts}"
-      ]
+      "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"]
     },
     {
-      "includes": [
-        "**/*.{js,mjs,cjs,ts,mts,cts}"
-      ],
+      "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"],
       "javascript": {
         "globals": ["exports"]
       }
     },
     {
-      "includes": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.mts",
-        "**/*.cts"
-      ],
+      "includes": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
       "linter": {
         "rules": {
           "complexity": {

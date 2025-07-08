@@ -2,9 +2,7 @@
   "root": false,
   "extends": "//",
   "files": {
-    "includes": [
-      "**/*.{ts,tsx,mts,cts}"
-    ]
+    "includes": ["**/*.{ts,tsx,mts,cts}"]
   },
   "linter": {
     "rules": {
