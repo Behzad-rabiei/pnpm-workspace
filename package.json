@@ -8,7 +8,7 @@
         "apps/*"
     ],
     "scripts": {
-        "dev": "pnpm -r --parallel dev",
+        "dev": "pnpm --filter=apps/ -r --parallel dev",
         "start": "pnpm -r --parallel start",
         "build": "pnpm -r build",
         "check": "pnpm -r --parallel check",
@@ -16,10 +16,11 @@
         "format": "pnpm -r --parallel format",
         "cz": "cz",
         "changeset": "changeset",
-        "start:backend": "pnpm --filter @my/api dev",
-        "start:frontend": "pnpm --filter @my/ui dev",
-        "start:temporal": "pnpm --filter @my/workflows dev",
-        "test": "vitest"
+        "start:backend": "pnpm --filter @reputo/api dev",
+        "start:frontend": "pnpm --filter @reputo/ui dev",
+        "start:temporal": "pnpm --filter @reputo/workflows dev",
+        "test": "vitest",
+        "ci:test":"npx vitest run --coverage"
     },
     "devDependencies": {
         "@biomejs/biome": "^2.0.6",
