@@ -2,7 +2,12 @@
   "root": false,
   "extends": "//",
   "files": {
-    "includes": ["src/**/*.ts", "test/**/*.ts", "src/**/*.spec.ts", "test/**/*.spec.ts"]
+    "includes": [
+      "src/**/*.ts",
+      "test/**/*.ts",
+      "src/**/*.spec.ts",
+      "test/**/*.spec.ts"
+    ]
   },
   "linter": {
     "rules": {
@@ -82,14 +87,24 @@
         "useNamespaceKeyword": "error"
       }
     },
-    "includes": ["**", "!eslint.config.mjs"]
+    "includes": [
+      "**",
+      "!eslint.config.mjs"
+    ]
   },
   "overrides": [
     {
-      "includes": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
+      "includes": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.mts",
+        "**/*.cts"
+      ],
       "linter": {
         "rules": {
-          "complexity": { "noArguments": "error" },
+          "complexity": {
+            "noArguments": "error"
+          },
           "correctness": {
             "noConstAssign": "off",
             "noGlobalObjectCalls": "off",
@@ -100,7 +115,9 @@
             "noUnreachable": "off",
             "noUnreachableSuper": "off"
           },
-          "style": { "useConst": "error" },
+          "style": {
+            "useConst": "error"
+          },
           "suspicious": {
             "noClassAssign": "off",
             "noDuplicateClassMembers": "off",
@@ -118,7 +135,9 @@
       }
     },
     {
-      "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"],
+      "includes": [
+        "**/*.{js,mjs,cjs,ts,mts,cts}"
+      ],
       "linter": {
         "rules": {
           "complexity": {
@@ -183,16 +202,31 @@
         }
       }
     },
-    { "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"] },
     {
-      "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"],
-      "javascript": { "globals": ["exports"] }
+      "includes": [
+        "**/*.{js,mjs,cjs,ts,mts,cts}"
+      ]
     },
     {
-      "includes": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
+      "includes": [
+        "**/*.{js,mjs,cjs,ts,mts,cts}"
+      ],
+      "javascript": {
+        "globals": ["exports"]
+      }
+    },
+    {
+      "includes": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.mts",
+        "**/*.cts"
+      ],
       "linter": {
         "rules": {
-          "complexity": { "noArguments": "error" },
+          "complexity": {
+            "noArguments": "error"
+          },
           "correctness": {
             "noConstAssign": "off",
             "noGlobalObjectCalls": "off",
@@ -203,7 +237,9 @@
             "noUnreachable": "off",
             "noUnreachableSuper": "off"
           },
-          "style": { "useConst": "error" },
+          "style": {
+            "useConst": "error"
+          },
           "suspicious": {
             "noClassAssign": "off",
             "noDuplicateClassMembers": "off",

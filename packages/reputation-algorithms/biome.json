@@ -1,7 +1,11 @@
 {
   "root": false,
   "extends": "//",
-  "files": { "includes": ["**/*.{ts,tsx,mts,cts}"] },
+  "files": {
+    "includes": [
+      "**/*.{ts,tsx,mts,cts}"
+    ]
+  },
   "linter": {
     "rules": {
       "recommended": false,
@@ -81,5 +85,7 @@
       }
     }
   },
-  "javascript": { "globals": ["exports"] }
+  "javascript": {
+    "globals": ["exports"]
+  }
 }

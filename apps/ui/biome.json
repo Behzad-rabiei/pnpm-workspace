@@ -2,13 +2,23 @@
   "root": false,
   "extends": "//",
   "files": {
-    "includes": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts", "src/**/*.spec.ts", "test/**/*.spec.ts"]
+    "includes": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "src/**/*.spec.ts",
+      "test/**/*.spec.ts"
+    ]
   },
   "linter": {
     "rules": {
       "recommended": false,
-      "complexity": { "noUselessTypeConstraint": "error" },
-      "correctness": { "noUnusedVariables": "error" },
+      "complexity": {
+        "noUselessTypeConstraint": "error"
+      },
+      "correctness": {
+        "noUnusedVariables": "error"
+      },
       "style": {
         "noCommonJs": "error",
         "noNamespace": "error",
@@ -92,12 +102,17 @@
         }
       }
     },
-    { "includes": ["**/*.{ts,tsx}"], "javascript": { "globals": [] } },
+    {
+      "includes": ["**/*.{ts,tsx}"],
+      "javascript": { "globals": [] }
+    },
     {
       "includes": ["**/*.{ts,tsx}"],
       "linter": {
         "rules": {
-          "complexity": { "noArguments": "error" },
+          "complexity": {
+            "noArguments": "error"
+          },
           "correctness": {
             "noConstAssign": "off",
             "noGlobalObjectCalls": "off",
@@ -108,7 +123,9 @@
             "noUnreachable": "off",
             "noUnreachableSuper": "off"
           },
-          "style": { "useConst": "error" },
+          "style": {
+            "useConst": "error"
+          },
           "suspicious": {
             "noClassAssign": "off",
             "noDuplicateClassMembers": "off",
@@ -129,8 +146,12 @@
       "includes": ["**/*.{ts,tsx}"],
       "linter": {
         "rules": {
-          "complexity": { "noUselessTypeConstraint": "error" },
-          "correctness": { "noUnusedVariables": "error" },
+          "complexity": {
+            "noUselessTypeConstraint": "error"
+          },
+          "correctness": {
+            "noUnusedVariables": "error"
+          },
           "style": {
             "noCommonJs": "error",
             "noNamespace": "error",
@@ -158,7 +179,10 @@
         }
       }
     },
-    { "includes": ["**/*.{ts,tsx}"], "linter": { "rules": {} } },
+    {
+      "includes": ["**/*.{ts,tsx}"],
+      "linter": { "rules": {} }
+    },
     {
       "includes": ["**/*.{ts,tsx}"],
       "javascript": {
@@ -292,7 +316,9 @@
       }
     },
     {
-      "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"],
+      "includes": [
+        "**/*.{js,mjs,cjs,ts,mts,cts}"
+      ],
       "linter": {
         "rules": {
           "complexity": {
@@ -357,16 +383,31 @@
         }
       }
     },
-    { "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"] },
     {
-      "includes": ["**/*.{js,mjs,cjs,ts,mts,cts}"],
-      "javascript": { "globals": ["exports"] }
+      "includes": [
+        "**/*.{js,mjs,cjs,ts,mts,cts}"
+      ]
     },
     {
-      "includes": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
+      "includes": [
+        "**/*.{js,mjs,cjs,ts,mts,cts}"
+      ],
+      "javascript": {
+        "globals": ["exports"]
+      }
+    },
+    {
+      "includes": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.mts",
+        "**/*.cts"
+      ],
       "linter": {
         "rules": {
-          "complexity": { "noArguments": "error" },
+          "complexity": {
+            "noArguments": "error"
+          },
           "correctness": {
             "noConstAssign": "off",
             "noGlobalObjectCalls": "off",
@@ -377,7 +418,9 @@
             "noUnreachable": "off",
             "noUnreachableSuper": "off"
           },
-          "style": { "useConst": "error" },
+          "style": {
+            "useConst": "error"
+          },
           "suspicious": {
             "noClassAssign": "off",
             "noDuplicateClassMembers": "off",
