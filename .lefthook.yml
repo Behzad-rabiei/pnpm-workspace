@@ -5,10 +5,10 @@ general:
 pre-commit:
     commands:
         code-quality:
-            # glob: "*.{js,jsx,ts,tsx,json}"
+            glob: '*.{js,jsx,ts,tsx,json}'
             run: pnpm run check
         test:
-            # glob: "*.{js,jsx,ts,tsx}"
+            glob: '*.{js,jsx,ts,tsx}'
             # run: pnpm lint {staged_files}
             run: pnpm run test # fix lint issues automatically
 
