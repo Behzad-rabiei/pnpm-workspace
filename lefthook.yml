@@ -2,11 +2,6 @@
 general:
     parallel: true
 
-# pre-commit:
-#     commands:
-#         code-quality:
-#             run: pnpm format
-
 prepare-commit-msg:
     commands:
         commitzen:
@@ -20,9 +15,13 @@ commit-msg:
         'lint commit message':
             run: pnpm exec commitlint --edit {1}
 
-pre-push:
+pre-commit:
     commands:
         code-quality:
             run: pnpm format
+pre-push:
+    commands:
+        code-quality:
+            run: pnpm check
         test:
             run: pnpm test
