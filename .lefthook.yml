@@ -1,26 +1,27 @@
 # Lefthook 1.11.x
 general:
-  parallel: true            # run independent commands concurrently
+    parallel: true # run independent commands concurrently
 
 pre-commit:
-  commands:
-    format:
-      glob: "*.{js,jsx,ts,tsx,json}"
-      run: pnpm format --write {staged_files}
-    lint:
-      glob: "*.{js,jsx,ts,tsx}"
-      run: pnpm lint {staged_files}
+    commands:
+        code-quality:
+            # glob: "*.{js,jsx,ts,tsx,json}"
+            run: pnpm check
+        test:
+            # glob: "*.{js,jsx,ts,tsx}"
+            # run: pnpm lint {staged_files}
+            run: pnpm test # fix lint issues automatically
 
 commit-msg:
-  commands:
-    commitlint:
-      # {1} = .git/COMMIT_EDITMSG
-      run: pnpm exec commitlint --edit {1}
+    commands:
+        commitlint:
+            # {1} = .git/COMMIT_EDITMSG
+            run: pnpm exec commitlint --edit {1}
 
 pre-push:
-  parallel: true
-  commands:
-    typecheck:
-      run: pnpm check          # tsc / build-time checks
-    test:
-      run: pnpm test --run     # vitest; change flags as you like
+    parallel: true
+    commands:
+        typecheck:
+            run: pnpm check # tsc / build-time checks
+        test:
+            run: pnpm test --run # vitest; change flags as you like
