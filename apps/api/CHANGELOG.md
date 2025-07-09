@@ -1,3 +1,15 @@
+# [@reputo/api-v2.0.0](https://github.com/Behzad-rabiei/pnpm-workspace/compare/@reputo/api-v1.0.0...@reputo/api-v2.0.0) (2025-07-09)
+
+
+### Features
+
+* **api:** j ([0aa21c2](https://github.com/Behzad-rabiei/pnpm-workspace/commit/0aa21c288c1383bb6c2ba366f2220f6c2afd06bb))
+
+
+### BREAKING CHANGES
+
+* **api:** f
+
 # @reputo/api-v1.0.0 (2025-07-09)
 
 
