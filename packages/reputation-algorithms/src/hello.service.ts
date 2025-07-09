@@ -1,3 +1,4 @@
 export function getHello(): string {
-  return 'Hello World';
+  console.log('Hello from getHello function!');
+  return 'Hello World!';
 }
