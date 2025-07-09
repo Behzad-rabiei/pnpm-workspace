@@ -15,7 +15,7 @@
         "lint": "pnpm -r --parallel lint",
         "format": "pnpm -r --parallel format",
         "cz": "cz",
-        "release": "semantic-release",
+        "release": "pnpm -r --workspace-concurrency=1 exec -- semantic-release -e semantic-release-monorepo",
         "start:backend": "pnpm --filter @reputo/api dev",
         "start:frontend": "pnpm --filter @reputo/ui dev",
         "start:temporal": "pnpm --filter @reputo/workflows dev",
