@@ -19,7 +19,8 @@
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
-        "dev": "pnpm run start:dev"
+        "dev": "pnpm run start:dev",
+        "release": "semantic-release"
     },
     "dependencies": {
         "@nestjs/common": "^11.0.1",
@@ -61,8 +62,5 @@
     "files": [
         "dist/**"
     ],
-    "release": {
-        "extends": "../../.releaserc.json"
-    },
     "packageManager": "pnpm@10.12.4"
 }
