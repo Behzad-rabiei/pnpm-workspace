@@ -34,6 +34,6 @@ pre-push:
             run: |
                 pnpm exec changeset status \
                 || { 
-                    echo "⚠️  WARNING: No Changeset detected. Run 'pnpm exec changeset add' to create one." >&2
+                    echo "⚠️  WARNING: No Changeset detected! Run 'pnpm exec changeset add' to create one." >&2
                     exit 1
                     }
