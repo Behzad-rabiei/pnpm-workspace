@@ -1,78 +1,101 @@
 name: Workspace CI
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+    group: ci-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  code-quality:
-    name: '☑️ Code Quality'
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        node-version: [20] 
-    steps:
-      - uses: actions/checkout@v4
+    code-quality:
+        name: '☑️ Code Quality'
+        runs-on: ubuntu-22.04
+        strategy:
+            matrix:
+                node-version: [20]
+        steps:
+            - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.4
-          run_install: false 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: pnpm
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 10.12.4
+                  run_install: false
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run check
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm run check
 
-  test:
-    name: '🧪 Test'
-    needs: code-quality
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        node-version: [20]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.4
-          run_install: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run ci:test
-        env:
-          CI: 'true'
-      - uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+    test:
+        name: '🧪 Test'
+        needs: code-quality
+        runs-on: ubuntu-22.04
+        strategy:
+            matrix:
+                node-version: [20]
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 10.12.4
+                  run_install: false
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: pnpm
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm run ci:test
+              env:
+                  CI: 'true'
+            - uses: codecov/codecov-action@v5
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
 
-  build:
-    name: '🏗️ Build'
-    needs: [code-quality, test]
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        node-version: [20]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.4
-          run_install: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run build
+    build:
+        name: '🏗️ Build'
+        needs: [code-quality, test]
+        runs-on: ubuntu-22.04
+        strategy:
+            matrix:
+                node-version: [20]
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 10.12.4
+                  run_install: false
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: pnpm
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm run build
+    release:
+        name: '🚀 Release'
+        needs: build
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        runs-on: ubuntu-22.04
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0 # semantic-release needs the full history
+
+            - uses: pnpm/action-setup@v4
+              with: { version: 10.12.4, run_install: false }
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20 # Node 20 is fine for semantic-release 24.x
+                  cache: pnpm
+
+            - run: pnpm install --frozen-lockfile --ignore-scripts
+            - run: pnpm run release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
