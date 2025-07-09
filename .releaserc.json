@@ -1,0 +1,25 @@
+{
+    "extends": ["semantic-release-monorepo"],
+
+    "branches": ["main"],
+
+    "tagFormat": "${pkg.name}@${version}",
+
+    "plugins": [
+        "@semantic-release/commit-analyzer",
+        "@semantic-release/release-notes-generator",
+
+        [
+            "@semantic-release/git",
+            {
+                "assets": [
+                    "apps/*/package.json",
+                    "packages/*/package.json",
+                    "apps/*/CHANGELOG.md",
+                    "packages/*/CHANGELOG.md"
+                ],
+                "message": "chore(release): ${pkg.name}@${nextRelease.version} [skip ci]"
+            }
+        ]
+    ]
+}
