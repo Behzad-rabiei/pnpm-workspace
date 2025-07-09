@@ -23,3 +23,8 @@ pre-push:
             run: pnpm check
         test:
             run: pnpm test
+        'warn if no changeset':
+            run: |
+                if ! pnpm exec changeset status --verbose; then
+                echo "⚠️  WARNING: No Changeset detected. Run 'pnpm exec changeset add' to create one."
+                fi
