@@ -1,4 +1,4 @@
 export function getHello(): string {
-  console.log('!');
+  console.log(':D');
   return 'Hello World';
 }
