@@ -20,7 +20,8 @@
         "start:frontend": "pnpm --filter @reputo/ui dev",
         "start:temporal": "pnpm --filter @reputo/workflows dev",
         "test": "vitest",
-        "ci:test": "npx vitest run --coverage"
+        "ci:test": "npx vitest run --coverage",
+        "ci:test1": "npx vitest run --coverage"
     },
     "devDependencies": {
         "@biomejs/biome": "^2.0.6",
