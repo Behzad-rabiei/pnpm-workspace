@@ -1,3 +1,11 @@
+# [@reputo/api-v2.2.0](https://github.com/Behzad-rabiei/pnpm-workspace/compare/@reputo/api-v2.1.0...@reputo/api-v2.2.0) (2025-07-10)
+
+
+### Features
+
+* **api:** add new route ([56c4278](https://github.com/Behzad-rabiei/pnpm-workspace/commit/56c42784b1a5a313887313e25620d92bff30069f))
+* **api:** add new route ([16e34eb](https://github.com/Behzad-rabiei/pnpm-workspace/commit/16e34eb4ca517c6a53bf81866f3c38728a68b119))
+
 # [@reputo/api-v2.1.0](https://github.com/Behzad-rabiei/pnpm-workspace/compare/@reputo/api-v2.0.0...@reputo/api-v2.1.0) (2025-07-09)
 
 
