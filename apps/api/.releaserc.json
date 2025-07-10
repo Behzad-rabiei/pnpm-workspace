@@ -7,12 +7,11 @@
         "semantic-release-commits-lint",
         "@semantic-release/release-notes-generator",
         ["@semantic-release/changelog"],
-        ["@anolilab/semantic-release-pnpm", { "npmPublish": false }],
         [
             "@semantic-release/git",
             {
                 "assets": ["package.json", "package-lock.json", "CHANGELOG.md"],
-                "message": "chore(release): Scope(API) ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+                "message": "chore(release): Scope(api) ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
             }
         ]
     ]

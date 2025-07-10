@@ -16,7 +16,6 @@
         "format": "pnpm -r --parallel format",
         "cz": "cz",
         "release": "pnpm -r --workspace-concurrency=1 release",
-        "releaseAPI": "pnpm -r --workspace-concurrency=1 releaseAPI",
         "start:backend": "pnpm --filter @reputo/api dev",
         "start:frontend": "pnpm --filter @reputo/ui dev",
         "start:temporal": "pnpm --filter @reputo/workflows dev",
