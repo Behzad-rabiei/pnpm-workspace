@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { helloWorld } from '@reptuo/reputation-algorithms';
+import { Injectable } from '@nestjs/common'
+import { helloWorld } from '@reptuo/reputation-algorithms'
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    console.log(helloWorld('Nest!!!'));
-    return 'Hello World';
-  }
+    getHello(): string {
+        console.log(helloWorld('Nest!!'))
+        return 'Hello World'
+    }
 }
