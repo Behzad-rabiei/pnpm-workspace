@@ -2,7 +2,7 @@ name: '🐳 Docker Images Release'
 
 on:
   workflow_run:
-    workflows: ['Workspace CI']
+    workflows: [🛡️ Quality Gate]
     types: [completed]
     branches: [main]
 
