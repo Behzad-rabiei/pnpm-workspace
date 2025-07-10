@@ -29,3 +29,5 @@ jobs:
             - run: pnpm run releaseAPI
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_CONFIG_WORKSPACES: 'false'
+                  NPM_CONFIG_WORKSPACES_UPDATE: 'false'
