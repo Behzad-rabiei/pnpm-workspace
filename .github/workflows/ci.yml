@@ -1,4 +1,4 @@
-name: 🛠 Quality Assurance CI
+name: '🛡️ Quality Gate'
 
 on:
     push:
