@@ -1,6 +1,6 @@
 name: 'Docker Images 🐳'
 
-run-name: Release • ${{ github.ref_name }}@${{ github.sha }} by @${{ github.actor }}
+run-name: Docker Images 🐳 • ${{ github.ref_name }}@${{ github.sha }} by @${{ github.actor }}
 
 on:
     workflow_run:
