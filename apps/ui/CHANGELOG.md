@@ -1,3 +1,15 @@
+# [@reputo/ui-v1.2.0](https://github.com/Behzad-rabiei/pnpm-workspace/compare/@reputo/ui-v1.1.0...@reputo/ui-v1.2.0) (2025-07-10)
+
+
+### Bug Fixes
+
+* fix ([5915bea](https://github.com/Behzad-rabiei/pnpm-workspace/commit/5915beaecced8edd78331f7a504d5add0bc3ce0c))
+
+
+### Features
+
+* a ([ddd2932](https://github.com/Behzad-rabiei/pnpm-workspace/commit/ddd2932c1b5d41ff5e56483187e531684e3c0c33))
+
 # [@reputo/ui-v1.1.0](https://github.com/Behzad-rabiei/pnpm-workspace/compare/@reputo/ui-v1.0.0...@reputo/ui-v1.1.0) (2025-07-10)
 
 
