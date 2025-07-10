@@ -1,20 +1,17 @@
-name: '🐳 Docker Images Release'
+name: 'Docker Images 🐳'
 
-run-name: |
-    🐳 Docker Images Release — \
-    ${{ github.event.workflow_run.head_branch }} @ \
-    ${{ github.event.workflow_run.head_sha }}
+run-name: Release • ${{ github.ref_name }}@${{ github.sha }} by @${{ github.actor }}
 
 on:
     workflow_run:
-        workflows: [🛡️ Quality Gate]
+        workflows: [Quality Gate 🛡️]
         types: [completed]
         branches: [main]
 
 jobs:
     docker-images:
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        name: '🐳 Build & Push Docker Images'
+        name: 'Build & Push Docker Images 🐳'
         runs-on: ubuntu-latest
         permissions:
             contents: write
