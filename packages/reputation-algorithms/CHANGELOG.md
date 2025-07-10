@@ -1,3 +1,10 @@
+# [@reptuo/reputation-algorithms-v1.1.0](https://github.com/Behzad-rabiei/pnpm-workspace/compare/@reptuo/reputation-algorithms-v1.0.0...@reptuo/reputation-algorithms-v1.1.0) (2025-07-10)
+
+
+### Features
+
+* a ([ddd2932](https://github.com/Behzad-rabiei/pnpm-workspace/commit/ddd2932c1b5d41ff5e56483187e531684e3c0c33))
+
 # @reptuo/reputation-algorithms-v1.0.0 (2025-07-09)
 
 
