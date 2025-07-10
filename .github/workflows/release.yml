@@ -23,6 +23,6 @@ jobs:
                   cache: pnpm
 
             - run: pnpm install --frozen-lockfile
-            - run: pnpm run release
+            - run: pnpm run releaseAPI
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
