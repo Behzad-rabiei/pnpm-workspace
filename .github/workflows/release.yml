@@ -2,9 +2,6 @@ name: '🚀 Release'
 on:
     push:
         branches: [main]
-
-concurrency: ${{ github.workflow }}-${{ github.ref }}
-cancel-in-progress: true
 jobs:
     release:
         name: '🚀 Release'
