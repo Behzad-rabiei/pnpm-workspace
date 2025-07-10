@@ -1,4 +1,4 @@
-name: Docker Release
+name: '🐳 Docker Images Release'
 
 on:
   workflow_run:
@@ -9,7 +9,7 @@ on:
 jobs:
   docker-images:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: Build & Push Docker Images
+    name: '🐳 Build & Push Docker Images'
     runs-on: ubuntu-latest
     permissions:
       contents: write

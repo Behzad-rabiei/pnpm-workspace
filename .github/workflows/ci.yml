@@ -1,4 +1,4 @@
-name: Workspace CI
+name: 🛠 Quality Assurance CI
 
 on:
     push:
@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
     code-quality:
-        name: '☑️ Code Quality'
+        name: '☑️ Code Quality (Node.js ${{ matrix.node-version }})'
         runs-on: ubuntu-22.04
         strategy:
             matrix:
@@ -33,7 +33,7 @@ jobs:
             - run: pnpm run check
 
     test:
-        name: '🧪 Test'
+        name: '🧪 Test (Node.js ${{ matrix.node-version }})'
         needs: code-quality
         runs-on: ubuntu-22.04
         strategy:
@@ -58,7 +58,7 @@ jobs:
                   token: ${{ secrets.CODECOV_TOKEN }}
 
     build:
-        name: '🏗️ Build'
+        name: '🏗️ Build (Node.js ${{ matrix.node-version }})'
         needs: [code-quality, test]
         runs-on: ubuntu-22.04
         strategy:
