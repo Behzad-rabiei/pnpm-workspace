@@ -3,6 +3,7 @@
     "branches": ["main"],
 
     "plugins": [
+        "@semantic-release/commit-analyzer",
         "semantic-release-commits-lint",
         "@semantic-release/release-notes-generator",
         ["@semantic-release/changelog"],
