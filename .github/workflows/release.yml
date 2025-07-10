@@ -1,12 +1,13 @@
-name: '🚀 Release'
-run-name: '🚀 Release – ${{ github.ref_name }} by @${{ github.actor }}'
+name: 'Release 🚀'
+
+run-name: Release 🚀 • ${{ github.ref_name }}@${{ github.sha }} by @${{ github.actor }}
 
 on:
     push:
         branches: [main]
 jobs:
     release:
-        name: '🚀 Release'
+        name: 'Release 🚀'
         runs-on: ubuntu-22.04
         steps:
             - uses: actions/checkout@v4
