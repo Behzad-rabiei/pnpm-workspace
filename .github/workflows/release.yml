@@ -1,4 +1,6 @@
 name: '🚀 Release'
+run-name: '🚀 Release – ${{ github.ref_name }} by @${{ github.actor }}'
+
 on:
     push:
         branches: [main]
