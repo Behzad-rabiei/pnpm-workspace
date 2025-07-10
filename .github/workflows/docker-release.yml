@@ -1,15 +1,15 @@
-name: Docker Release
+name: '🐳 Docker Images Release'
 
 on:
   workflow_run:
-    workflows: ['Workspace CI']
+    workflows: [🛡️ Quality Gate]
     types: [completed]
     branches: [main]
 
 jobs:
   docker-images:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: Build & Push Docker Images
+    name: '🐳 Build & Push Docker Images'
     runs-on: ubuntu-latest
     permissions:
       contents: write
