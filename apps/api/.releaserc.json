@@ -7,6 +7,7 @@
         "semantic-release-commits-lint",
         "@semantic-release/release-notes-generator",
         ["@semantic-release/changelog"],
+        ["@anolilab/semantic-release-pnpm", { "npmPublish": false }],
         [
             "@semantic-release/git",
             {
