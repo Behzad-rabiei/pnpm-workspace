@@ -1,3 +1,11 @@
+# [@reputo/ui-v1.1.0](https://github.com/Behzad-rabiei/pnpm-workspace/compare/@reputo/ui-v1.0.0...@reputo/ui-v1.1.0) (2025-07-10)
+
+
+### Features
+
+* **ui:** add new page ([b80c4f6](https://github.com/Behzad-rabiei/pnpm-workspace/commit/b80c4f660f075cf345a9a76c4990ab9629d6d52d))
+* **ui:** add new page ([5d79dc3](https://github.com/Behzad-rabiei/pnpm-workspace/commit/5d79dc306457f4767f6feae91b677423c9aaf940))
+
 # @reputo/ui-v1.0.0 (2025-07-09)
 
 
