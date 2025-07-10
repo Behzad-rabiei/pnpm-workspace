@@ -20,7 +20,8 @@
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "dev": "pnpm run start:dev",
-        "release": "semantic-release"
+        "release": "semantic-release",
+        "releaseAPI": "semantic-release"
     },
     "dependencies": {
         "@nestjs/common": "^11.0.1",
@@ -31,6 +32,7 @@
         "rxjs": "^7.8.1"
     },
     "devDependencies": {
+        "@commitlint/config-conventional": "^19.8.1",
         "@eslint/eslintrc": "^3.2.0",
         "@eslint/js": "^9.18.0",
         "@nestjs/cli": "^11.0.0",
