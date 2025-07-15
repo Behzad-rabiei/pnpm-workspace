@@ -1,17 +1,34 @@
-# .github/workflows/staging.yaml
 name: Staging 🐳
 on:
     push:
-        branches:
-            - main
+        branches: [main]
+
+env:
+    TAG_MAIN: main-${{ github.sha }}
+
 jobs:
-    quality-gate:
-        uses: ./.github/workflows/_quality-gate.yml
-    build-staging:
-        needs: quality-gate
+    gate: { uses: ./.github/workflows/_quality-gate.yml }
+
+    build:
+        needs: gate
         uses: ./.github/workflows/_build-and-push.yml
         with:
-            ref: ${{ github.event.workflow_run.head_sha }}
-            tag-suffix: main-${{ github.event.workflow_run.head_sha }}
+            ref: ${{ github.sha }}
+            tag: ${{ env.TAG_MAIN }}
             push: true
-            latest: true
+            latest: false
+
+    retag-staging:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Retag :staging alias and push
+              run: |
+                  for img in api ui workflows; do
+                    docker pull ghcr.io/behzad-rabiei/pnpm-workspace/$img:${TAG_MAIN}
+                    docker tag ghcr.io/behzad-rabiei/pnpm-workspace/$img:${TAG_MAIN} \
+                              ghcr.io/behzad-rabiei/pnpm-workspace/$img:staging
+                    docker push ghcr.io/behzad-rabiei/pnpm-workspace/$img:staging
+                  done
+            - name: Trigger remote staging stack update (Watchtower will notice)
+              run: echo "Nothing to do – Watchtower pulls :staging automatically."
