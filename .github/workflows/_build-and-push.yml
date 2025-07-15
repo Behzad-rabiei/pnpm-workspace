@@ -1,3 +1,4 @@
+# .github/workflows/_build-and-push.yml
 name: Build & Push Docker Images 🐳
 
 on:
@@ -9,8 +10,7 @@ on:
             latest: { type: boolean, required: false, default: false }
 
 env:
-    REGISTRY: ghcr.io
-    REPO: ${{ github.repository }}
+    IMAGE_PREFIX: ghcr.io/behzad-rabiei/pnpm-workspace
 
 jobs:
     docker-images:
@@ -33,15 +33,14 @@ jobs:
             - uses: actions/cache@v3
               with:
                   path: /tmp/.buildx-cache
-                  key: buildx-${{ env.REPO }}-${{ matrix.image }}-${{ inputs.tag-suffix }}
+                  key: buildx-${{ github.repository }}-${{ matrix.image }}-${{ inputs.tag-suffix }}
                   restore-keys: |
-                      buildx-${{ env.REPO }}-${{ matrix.image }}-
-                      buildx-${{ env.REPO }}-
+                      buildx-${{ github.repository }}-${{ matrix.image }}-
 
             - name: Login to GHCR
               uses: docker/login-action@v2
               with:
-                  registry: ${{ env.REGISTRY }}
+                  registry: ghcr.io
                   username: ${{ github.repository_owner }}
                   password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -53,5 +52,5 @@ jobs:
                   target: ${{ matrix.image }}
                   push: ${{ inputs.push }}
                   tags: |
-                      ghcr.io/behzad-rabiei/pnpm-workspace/${{ inputs.image }}:${{ inputs.tag-suffix }}
-                      ${{ inputs.latest && format('ghcr.io/behzad-rabiei/pnpm-workspace/{0}:latest', inputs.image) || '' }}
+                      ${{ format('{0}/{1}:{2}', env.IMAGE_PREFIX, matrix.image, inputs.tag-suffix) }}
+                      ${{ inputs.latest && format('{0}/{1}:latest', env.IMAGE_PREFIX, matrix.image) || '' }}
