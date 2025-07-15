@@ -1,17 +1,17 @@
 # .github/workflows/staging.yaml
 name: Staging 🐳
 on:
-    workflow_run:
-        workflows: [Quality Gate 🛡️]
-        types: [completed]
-
+    push:
+        branches:
+            - main
 jobs:
+    quality-gate:
+        uses: ./.github/workflows/_quality-gate.yml
     build-staging:
-        if: ${{ github.event.workflow_run.conclusion == 'success'
-            && github.event.workflow_run.pull_requests.length == 0 }}
-        uses: ./.github/workflows/_build-and-push.yaml
+        needs: quality-gate
+        uses: ./.github/workflows/_build-and-push.yml
         with:
             ref: ${{ github.event.workflow_run.head_sha }}
             tag-suffix: main-${{ github.event.workflow_run.head_sha }}
             push: true
-            latest: true # bump :latest for the branch
+            latest: true
