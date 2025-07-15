@@ -1,18 +1,18 @@
 # .github/workflows/review.yaml
 name: Review 🐳
 on:
-  workflow_run:
-    workflows: [Quality Gate 🛡️]
-    types:     [completed]
-    # branches:  [main]      # fires for PRs into main
+    workflow_run:
+        workflows: [Quality Gate 🛡️]
+        types: [completed]
+        branches: [main] # fires for PRs into main
 
 jobs:
-  build-review:
-    if: ${{ github.event.workflow_run.conclusion == 'success' 
-          && github.event.workflow_run.pull_requests.length > 0 }}
-    uses: ./.github/workflows/_build-and-push.yaml
-    with:
-      ref:        ${{ github.event.workflow_run.head_sha }}
-      tag-suffix: pr-${{ github.event.workflow_run.pull_requests[0].number }}
-      push:       true
-      latest:     false
+    build-review:
+        if: ${{ github.event.workflow_run.conclusion == 'success'
+            && github.event.workflow_run.pull_requests.length > 0 }}
+        uses: ./.github/workflows/_build-and-push.yaml
+        with:
+            ref: ${{ github.event.workflow_run.head_sha }}
+            tag-suffix: pr-${{ github.event.workflow_run.pull_requests[0].number }}
+            push: true
+            latest: false
