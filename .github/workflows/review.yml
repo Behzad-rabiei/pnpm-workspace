@@ -13,8 +13,6 @@ concurrency:
 jobs:
     quality-gate:
         uses: ./.github/workflows/_quality-gate.yml
-        with:
-            node-versions: '20'
 
     build-review:
         needs: quality-gate
