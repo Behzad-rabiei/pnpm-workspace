@@ -11,15 +11,10 @@ concurrency:
 
 jobs:
     quality-gate:
-        uses: ./.github/workflows/_quality-gate.yaml
-        with:
-            node-versions: '20'
+        uses: ./.github/workflows/_quality‑gate.yml
     build-review:
         needs: quality-gate
-        if: |
-            needs.quality-gate.result == 'success' &&
-            github.event_name == 'pull_request'
-        uses: ./.github/workflows/_build-and-push.yaml
+        uses: ./.github/workflows/_build-and-push.yml
         with:
             ref: ${{ github.sha }}
             tag-suffix: pr-${{ github.event.pull_request.number }}

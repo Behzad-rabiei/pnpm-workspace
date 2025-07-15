@@ -8,9 +8,6 @@ on:
         default: '20'
 
 jobs:
-  # --------------------------------------------------
-  # 1. Code Quality
-  # --------------------------------------------------
   code-quality:
     name: "Code Quality ☑️ (Node.js ${{ matrix.node }})"
     runs-on: ubuntu-22.04
