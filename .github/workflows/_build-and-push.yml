@@ -52,4 +52,6 @@ jobs:
                   file: Dockerfile
                   target: ${{ matrix.image }}
                   push: ${{ inputs.push }}
-                  tags: ghcr.io/behzad-rabiei/pnpm-workspace/${{ matrix.image }}:latest
+                  tags: |
+                      ghcr.io/behzad-rabiei/pnpm-workspace/${{ inputs.image }}:${{ inputs.tag-suffix }}
+                      ${{ inputs.latest && format('ghcr.io/behzad-rabiei/pnpm-workspace/{0}:latest', inputs.image) || '' }}
