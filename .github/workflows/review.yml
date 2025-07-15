@@ -4,11 +4,12 @@ on:
   workflow_run:
     workflows: [Quality Gate 🛡️]
     types:     [completed]
-    branches:  [main]      # fires for PRs into main
+    # branches:  [main]      # fires for PRs into main
 
 jobs:
   build-review:
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.pull_requests != '' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' 
+          && github.event.workflow_run.pull_requests.length > 0 }}
     uses: ./.github/workflows/_build-and-push.yaml
     with:
       ref:        ${{ github.event.workflow_run.head_sha }}
