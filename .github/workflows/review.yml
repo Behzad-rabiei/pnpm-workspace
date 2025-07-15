@@ -1,51 +1,24 @@
 name: Review 🐳
-run-name: '${{ github.event_name }} • PR #${{ github.event.pull_request.number }}'
+run-name: '${{ github.event_name }} • ${{ github.ref_name }}@${{ github.sha }}'
 
 on:
     pull_request:
-        types: [opened, synchronize, reopened]
-        branches: [main]
+        branches:
+            - main
 
 concurrency:
-    group: pr-${{ github.event.pull_request.number }}
+    group: 'ci-${{ github.event.pull_request.number || github.ref }}'
     cancel-in-progress: true
 
-env:
-    PR_NUM: ${{ github.event.pull_request.number }}
-    TAG: pr-${{ github.event.pull_request.number }}-${{ github.sha }}
-
 jobs:
-    gate:
+    quality-gate:
         uses: ./.github/workflows/_quality-gate.yml
 
-    build:
-        needs: gate
+    build-review:
+        needs: quality-gate
         uses: ./.github/workflows/_build-and-push.yml
         with:
             ref: ${{ github.sha }}
-            tag: ${{ env.TAG }}
+            tag-suffix: pr-${{ github.event.pull_request.number }}
             push: true
             latest: false
-#   deploy:
-#     needs: build
-#     runs-on: ubuntu-latest
-#     environment: review
-#     steps:
-#       - name: Copy compose & deploy via SSH
-#         uses: appleboy/ssh-action@v1
-#         with:
-#           host: ${{ secrets.REVIEW_HOST }}
-#           username: ${{ secrets.REVIEW_USER }}
-#           key: ${{ secrets.REVIEW_KEY }}
-#           script: |
-#             set -e
-#             export PR=${PR_NUM}
-#             PROJECT=review-${PR}
-#             mkdir -p ~/review-${PR}
-#             cd ~/review-${PR}
-#             cat > compose.yml <<'EOF'
-#             $(cat deploy/review/compose.template.yml)
-#             EOF
-#             envsubst < compose.yml > compose.rendered.yml
-#             docker compose -f compose.rendered.yml --project-name "$PROJECT" pull
-#             docker compose -f compose.rendered.yml --project-name "$PROJECT" up -d --force-recreate --remove-orphans
