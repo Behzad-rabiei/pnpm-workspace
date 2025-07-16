@@ -1,5 +1,4 @@
-# .github/workflows/staging.yaml
-name: Staging 🐳
+name: Staging 🚧
 on:
     push:
         branches:
