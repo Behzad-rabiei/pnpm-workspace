@@ -9,7 +9,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [ubuntu-22.04]
+                os: [ubuntu-latest]
                 node-version: ['20']
                 pnpm-version: ['10.12.4']
         steps:
