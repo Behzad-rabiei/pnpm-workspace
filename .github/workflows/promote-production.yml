@@ -1,4 +1,3 @@
-# .github/workflows/promote-production.yaml
 name: Promote to Production 🚀
 on:
     workflow_dispatch:
