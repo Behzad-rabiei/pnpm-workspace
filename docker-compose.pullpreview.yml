@@ -24,8 +24,8 @@ services:
         environment:
             - NODE_ENV=preview
             - PORT=3000
-        expose:
-            - '3000'
+        ports:
+            - '3000:3000'
 
     ui:
         build:
@@ -38,15 +38,15 @@ services:
             - api
         environment:
             - NODE_ENV=preview
-        expose:
-            - '8080'
+        ports:
+            - '8080:8080'
 
-    workflows:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            target: workflows
-        restart: unless-stopped
-        container_name: workflows-preview
-        environment:
-            - NODE_ENV=preview
+    # workflows:
+    #     build:
+    #         context: .
+    #         dockerfile: Dockerfile
+    #         target: workflows
+    #     restart: unless-stopped
+    #     container_name: workflows-preview
+    #     environment:
+    #         - NODE_ENV=preview
