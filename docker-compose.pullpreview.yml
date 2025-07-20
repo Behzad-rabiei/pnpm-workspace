@@ -1,5 +1,4 @@
 services:
-    # SSL termination proxy using Caddy
     proxy:
         image: caddy:2
         restart: unless-stopped
@@ -15,7 +14,6 @@ services:
             - '/data'
             - './Caddyfile:/etc/caddy/Caddyfile:ro'
 
-    # API service (NestJS backend)
     api:
         build:
             context: .
@@ -29,7 +27,6 @@ services:
         expose:
             - '3000'
 
-    # UI service (Vite frontend)
     ui:
         build:
             context: .
@@ -41,11 +38,9 @@ services:
             - api
         environment:
             - NODE_ENV=preview
-            - VITE_API_URL=https://${PULLPREVIEW_PUBLIC_DNS}/api
         expose:
             - '8080'
 
-    # Workflows service (Temporal/background jobs)
     workflows:
         build:
             context: .
@@ -55,6 +50,3 @@ services:
         container_name: workflows-preview
         environment:
             - NODE_ENV=preview
-        # Add this if workflows has a web interface
-        # expose:
-        #     - '3001'
