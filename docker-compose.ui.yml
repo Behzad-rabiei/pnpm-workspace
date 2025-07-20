@@ -32,4 +32,4 @@ volumes:
 
 networks:
     pullpreview-network:
-        external: true
+        driver: bridge
