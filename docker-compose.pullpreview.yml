@@ -4,7 +4,7 @@ services:
         image: caddy:2
         restart: unless-stopped
         command: |
-            caddy reverse-proxy --from '${PULLPREVIEW_PUBLIC_DNS}' --to ui:8080
+            caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
         depends_on:
             - ui
             - api
@@ -13,6 +13,7 @@ services:
             - '443:443'
         volumes:
             - '/data'
+            - './Caddyfile:/etc/caddy/Caddyfile:ro'
 
     # API service (NestJS backend)
     api:
@@ -54,3 +55,6 @@ services:
         container_name: workflows-preview
         environment:
             - NODE_ENV=preview
+        # Add this if workflows has a web interface
+        # expose:
+        #     - '3001'
