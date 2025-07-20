@@ -9,8 +9,8 @@ on:
 concurrency: ${{ github.ref }}
 
 jobs:
-    deploy:
-        name: Deploy
+    deploy-api:
+        name: Deploy API
         runs-on: ubuntu-latest
         timeout-minutes: 30
         permissions:
@@ -19,14 +19,37 @@ jobs:
             pull-requests: write # to remove labels
             statuses: write # to create commit status
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
             - uses: pullpreview/action@v5
               with:
-                  # Those GitHub users will have SSH access to the servers
-                  # A staging environment will always exist for the master branch
+                  deployment_variant: env1
+                  label: pullpreview-multi-env
+                  instance_type: micro
                   always_on: main
-                  # PullPreview will use those 2 files when running docker-compose up
-                  compose_files: docker-compose.pullpreview.yml
+                  compose_files: docker-compose.api.yml
+
+              env:
+                  AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+                  AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+                  AWS_REGION: 'us-east-1'
+    deploy-ui:
+        name: Deploy UI
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        permissions:
+            contents: read # to fetch code (actions/checkout)
+            deployments: write # to delete deployments
+            pull-requests: write # to remove labels
+            statuses: write # to create commit status
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pullpreview/action@v5
+              with:
+                  deployment_variant: env2
+                  label: pullpreview-multi-env
+                  instance_type: micro
+                  always_on: main
+                  compose_files: docker-compose.ui.yml
 
               env:
                   AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
