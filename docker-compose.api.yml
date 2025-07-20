@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+    proxy:
+        image: caddy:2
+        restart: unless-stopped
+        command: "caddy reverse-proxy --from '${PULLPREVIEW_PUBLIC_DNS}' --to api:3000"
+        depends_on:
+            - api
+        ports:
+            - '80:80'
+            - '443:443'
+        volumes:
+            - '/data'
+        networks:
+            - pullpreview-network
+
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: api
+        restart: unless-stopped
+        container_name: api
+        expose:
+            - '3000'
+        networks:
+            - pullpreview-network
+
+volumes:
+    api_caddy_data:
+
+networks:
+    pullpreview-network:
+        driver: bridge

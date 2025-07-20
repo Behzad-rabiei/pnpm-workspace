@@ -1,0 +1,59 @@
+# .github/workflows/pullpreview.yml
+name: pullpreview_multi_env
+on:
+    push:
+        branches: [main]
+    pull_request:
+        types: [labeled, unlabeled, synchronize, closed, reopened]
+
+concurrency: ${{ github.ref }}
+
+jobs:
+    deploy-api:
+        name: Deploy API
+        runs-on: ubuntu-latest
+        if: github.event_name == 'schedule' || github.event_name == 'push' || github.event.label.name == 'pullpreview-multi-env' || contains(github.event.pull_request.labels.*.name, 'pullpreview-multi-env')
+        timeout-minutes: 30
+        permissions:
+            contents: read # to fetch code (actions/checkout)
+            deployments: write # to delete deployments
+            pull-requests: write # to remove labels
+            statuses: write # to create commit status
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pullpreview/action@v5
+              with:
+                  deployment_variant: env1
+                  label: pullpreview-multi-env
+                  instance_type: micro
+                  always_on: main
+                  compose_files: docker-compose.api.yml
+
+              env:
+                  AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+                  AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+                  AWS_REGION: 'us-east-1'
+    deploy-ui:
+        name: Deploy UI
+        runs-on: ubuntu-latest
+        if: github.event_name == 'schedule' || github.event_name == 'push' || github.event.label.name == 'pullpreview-multi-env' || contains(github.event.pull_request.labels.*.name, 'pullpreview-multi-env')
+        timeout-minutes: 30
+        permissions:
+            contents: read # to fetch code (actions/checkout)
+            deployments: write # to delete deployments
+            pull-requests: write # to remove labels
+            statuses: write # to create commit status
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pullpreview/action@v5
+              with:
+                  deployment_variant: env2
+                  label: pullpreview-multi-env
+                  instance_type: micro
+                  always_on: main
+                  compose_files: docker-compose.ui.yml
+
+              env:
+                  AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+                  AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+                  AWS_REGION: 'us-east-1'

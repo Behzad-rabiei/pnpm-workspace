@@ -1,0 +1,16 @@
+on:
+    pull_request:
+        types: [closed]
+jobs:
+    teardown:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: appleboy/ssh-action@v1
+              with:
+                  host: ${{ secrets.REVIEW_HOST }}
+                  username: ${{ secrets.REVIEW_USER }}
+                  key: ${{ secrets.REVIEW_KEY }}
+                  script: |
+                      PROJECT=review-${{ github.event.pull_request.number }}
+                      docker compose --project-name "$PROJECT" down -v || true
+                      docker volume prune -f

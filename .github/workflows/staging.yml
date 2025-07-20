@@ -1,5 +1,4 @@
-# .github/workflows/staging.yaml
-name: Staging 🐳
+name: Staging 🚧
 on:
     push:
         branches:
@@ -15,3 +14,4 @@ jobs:
             tag-suffix: main-${{ github.event.workflow_run.head_sha }}
             push: true
             latest: true
+9
