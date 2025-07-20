@@ -1,19 +1,17 @@
 version: '3.9'
 
 services:
-    ui-gateway:
+    proxy:
         image: caddy:2
         restart: unless-stopped
-        command: "caddy reverse-proxy --from 'ui.${PULLPREVIEW_PUBLIC_DNS}' --to ui:8080"
+        command: "caddy reverse-proxy --from '${PULLPREVIEW_PUBLIC_DNS}' --to ui:8080"
         depends_on:
             - ui
         ports:
             - '80:80'
             - '443:443'
         volumes:
-            - ui_caddy_data:/data
-        environment:
-            - PULLPREVIEW_PUBLIC_DNS=${PULLPREVIEW_PUBLIC_DNS}
+            - '/data'
         networks:
             - pullpreview-network
 
@@ -22,14 +20,8 @@ services:
             context: .
             dockerfile: Dockerfile
             target: ui
-            args:
-                - VITE_API_URL=https://api.${PULLPREVIEW_PUBLIC_DNS}
         restart: unless-stopped
         container_name: ui
-        environment:
-            - NODE_ENV=preview
-            - VITE_API_URL=https://api.${PULLPREVIEW_PUBLIC_DNS}
-            - PULLPREVIEW_PUBLIC_DNS=${PULLPREVIEW_PUBLIC_DNS}
         expose:
             - '8080'
         healthcheck:

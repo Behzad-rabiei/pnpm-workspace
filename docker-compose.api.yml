@@ -1,19 +1,17 @@
 version: '3.9'
 
 services:
-    api-gateway:
+    proxy:
         image: caddy:2
         restart: unless-stopped
-        command: "caddy reverse-proxy --from 'api.${PULLPREVIEW_PUBLIC_DNS}' --to api:3000"
+        command: "caddy reverse-proxy --from '${PULLPREVIEW_PUBLIC_DNS}' --to api:3000"
         depends_on:
             - api
         ports:
             - '80:80'
             - '443:443'
         volumes:
-            - api_caddy_data:/data
-        environment:
-            - PULLPREVIEW_PUBLIC_DNS=${PULLPREVIEW_PUBLIC_DNS}
+            - '/data'
         networks:
             - pullpreview-network
 
