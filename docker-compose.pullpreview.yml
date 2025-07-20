@@ -1,0 +1,56 @@
+services:
+    # SSL termination proxy using Caddy
+    proxy:
+        image: caddy:2
+        restart: unless-stopped
+        command: |
+            caddy reverse-proxy --from '${PULLPREVIEW_PUBLIC_DNS}' --to ui:8080
+        depends_on:
+            - ui
+            - api
+        ports:
+            - '80:80'
+            - '443:443'
+        volumes:
+            - '/data'
+
+    # API service (NestJS backend)
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: api
+        restart: unless-stopped
+        container_name: api-preview
+        environment:
+            - NODE_ENV=preview
+            - PORT=3000
+        expose:
+            - '3000'
+
+    # UI service (Vite frontend)
+    ui:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: ui
+        restart: unless-stopped
+        container_name: ui-preview
+        depends_on:
+            - api
+        environment:
+            - NODE_ENV=preview
+            - VITE_API_URL=https://${PULLPREVIEW_PUBLIC_DNS}/api
+        expose:
+            - '8080'
+
+    # Workflows service (Temporal/background jobs)
+    workflows:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: workflows
+        restart: unless-stopped
+        container_name: workflows-preview
+        environment:
+            - NODE_ENV=preview

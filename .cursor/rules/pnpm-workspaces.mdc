@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+This repo is monorepo setup using pnpm workspaces. [package.json](mdc:package.json) [pnpm-lock.yaml](mdc:pnpm-lock.yaml) [Dockerfile](mdc:Dockerfile)
+The repo contain nest app (api), vite app(ui),pure typescript(workflows) and a pure typescript package (reputation-algorithms).
+
+

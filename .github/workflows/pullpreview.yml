@@ -1,0 +1,33 @@
+# .github/workflows/pullpreview.yml
+name: PullPreview
+on:
+    push:
+        branches: [main]
+    pull_request:
+        types: [labeled, unlabeled, synchronize, closed, reopened]
+
+concurrency: ${{ github.ref }}
+
+jobs:
+    deploy:
+        name: Deploy
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        permissions:
+            contents: read # to fetch code (actions/checkout)
+            deployments: write # to delete deployments
+            pull-requests: write # to remove labels
+            statuses: write # to create commit status
+        steps:
+            - uses: actions/checkout@v2
+            - uses: pullpreview/action@v5
+              with:
+                  # Those GitHub users will have SSH access to the servers
+                  admins: crohr,other-github-user
+                  # A staging environment will always exist for the master branch
+                  always_on: main
+
+              env:
+                  AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+                  AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+                  AWS_REGION: 'us-east-1'
