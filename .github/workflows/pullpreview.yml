@@ -22,8 +22,6 @@ jobs:
             - uses: actions/checkout@v2
             - uses: pullpreview/action@v5
               with:
-                  # Those GitHub users will have SSH access to the servers
-                  admins: crohr,other-github-user
                   # A staging environment will always exist for the master branch
                   always_on: main
 
