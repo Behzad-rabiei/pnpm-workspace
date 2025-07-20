@@ -2,50 +2,38 @@ services:
     proxy:
         image: caddy:2
         restart: unless-stopped
-        command: |
-            caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
+        command: "caddy reverse-proxy --from '${PULLPREVIEW_PUBLIC_DNS}' --to ui:80"
         depends_on:
             - ui
-            - api
         ports:
             - '80:80'
             - '443:443'
         volumes:
             - '/data'
 
-    api:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            target: api
-        restart: unless-stopped
-        container_name: api-preview
-        environment:
-            - NODE_ENV=preview
-            - PORT=3000
-        ports:
-            - '3000:3000'
+        api:
+            build:
+                context: .
+                dockerfile: Dockerfile
+                target: api
+            restart: unless-stopped
+            container_name: api-preview
+            environment:
+                - NODE_ENV=preview
+                - PORT=3000
+            ports:
+                - '3000:3000'
 
-    ui:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            target: ui
-        restart: unless-stopped
-        container_name: ui-preview
-        depends_on:
-            - api
-        environment:
-            - NODE_ENV=preview
-        ports:
-            - '8080:8080'
-
-    # workflows:
-    #     build:
-    #         context: .
-    #         dockerfile: Dockerfile
-    #         target: workflows
-    #     restart: unless-stopped
-    #     container_name: workflows-preview
-    #     environment:
-    #         - NODE_ENV=preview
+        ui:
+            build:
+                context: .
+                dockerfile: Dockerfile
+                target: ui
+            restart: unless-stopped
+            container_name: ui-preview
+            depends_on:
+                - api
+            environment:
+                - NODE_ENV=preview
+            ports:
+                - '8080:8080'

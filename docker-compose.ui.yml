@@ -1,0 +1,36 @@
+services:
+    proxy:
+        image: caddy:2
+        restart: unless-stopped
+        command: "caddy reverse-proxy --from '${PULLPREVIEW_PUBLIC_DNS}' --to ui:80"
+        depends_on:
+            - ui
+        ports:
+            - '80:80'
+            - '443:443'
+        volumes:
+            - caddy_data:/data
+        networks:
+            - default
+
+    ui:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: ui
+        restart: unless-stopped
+        container_name: ui-preview
+        environment:
+            - NODE_ENV=preview
+        ports:
+            - '8080:8080'
+        networks:
+            - default
+
+volumes:
+    caddy_data:
+
+networks:
+    default:
+        name: pullpreview-network
+        driver: bridge

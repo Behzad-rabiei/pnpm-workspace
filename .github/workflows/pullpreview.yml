@@ -9,7 +9,7 @@ on:
 concurrency: ${{ github.ref }}
 
 jobs:
-    deploy:
+    deploy-api:
         name: Deploy
         runs-on: ubuntu-latest
         timeout-minutes: 30
@@ -22,10 +22,30 @@ jobs:
             - uses: actions/checkout@v2
             - uses: pullpreview/action@v5
               with:
-                  # A staging environment will always exist for the master branch
                   always_on: main
-                  # PullPreview will use those 2 files when running docker-compose up
-                  compose_files: docker-compose.pullpreview.yml
+                  label: pullpreview-multi-env
+                  compose_files: docker-compose.api.yml
+
+              env:
+                  AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+                  AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+                  AWS_REGION: 'us-east-1'
+    deploy-ui:
+        name: Deploy
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        permissions:
+            contents: read # to fetch code (actions/checkout)
+            deployments: write # to delete deployments
+            pull-requests: write # to remove labels
+            statuses: write # to create commit status
+        steps:
+            - uses: actions/checkout@v2
+            - uses: pullpreview/action@v5
+              with:
+                  always_on: main
+                  label: pullpreview-multi-env
+                  compose_files: docker-compose.ui.yml
 
               env:
                   AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
