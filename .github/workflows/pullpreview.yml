@@ -23,7 +23,7 @@ jobs:
             - uses: pullpreview/action@v5
               with:
                   # Those GitHub users will have SSH access to the servers
-\                  # A staging environment will always exist for the master branch
+                  # A staging environment will always exist for the master branch
                   always_on: main
                   # PullPreview will use those 2 files when running docker-compose up
                   compose_files: docker-compose.pullpreview.yml
