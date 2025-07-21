@@ -1,5 +1,5 @@
 name: Pull Preview 👀
-run-name: Pull Preview 👀 • ${{ github.event_name == 'pull_request' && format('PR #{0}', github.event.pull_request.number) || github.ref_name }} • @${{ github.actor }}
+run-name: Pull Preview 👀
 on:
     push:
         branches: [main]

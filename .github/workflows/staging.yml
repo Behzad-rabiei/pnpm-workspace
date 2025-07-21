@@ -1,5 +1,5 @@
 name: Staging 🚧
-run-name: Staging 🚧 • ${{ github.ref_name }}@${{ github.sha }} • @${{ github.actor }}
+run-name: Staging 🚧
 on:
     push:
         branches: [main]

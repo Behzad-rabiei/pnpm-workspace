@@ -1,5 +1,5 @@
 name: Pull Request Check 🔄
-run-name: Pull Request Check 🔄 • #${{ github.event.pull_request.number }} • ${{ github.event.pull_request.title }} • @${{ github.actor }}
+run-name: Pull Request Check 🔄
 
 on:
     pull_request:

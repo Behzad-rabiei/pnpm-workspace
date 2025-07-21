@@ -1,6 +1,6 @@
 name: Quality Gate 🛡️
-run-name: Quality Gate 🛡️ • ${{ github.ref_name }}@${{ github.sha }} • @${{ github.actor }}
-on:
+run-name: Quality Gate 🛡️
+
     workflow_call:
 
 jobs:
