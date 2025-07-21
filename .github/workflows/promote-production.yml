@@ -1,4 +1,6 @@
-name: Promote Production 🚀
+name: Promote to Production 🚀
+run-name: Promote to Production 🚀 • ${{ github.event.inputs.commit }} • @${{ github.actor }}
+
 on:
     workflow_dispatch:
         inputs:

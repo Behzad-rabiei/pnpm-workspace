@@ -1,9 +1,9 @@
-name: Pull Request 🔄
+name: Pull Request Check 🔄
+run-name: Pull Request Check 🔄 • #${{ github.event.pull_request.number }} • ${{ github.event.pull_request.title }} • @${{ github.actor }}
 
 on:
     pull_request:
-        branches:
-            - main
+        branches: [main]
 
 concurrency:
     group: 'ci-${{ github.event.pull_request.number || github.ref }}'

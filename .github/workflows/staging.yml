@@ -1,8 +1,8 @@
 name: Staging 🚧
+run-name: Staging 🚧 • ${{ github.ref_name }}@${{ github.sha }} • @${{ github.actor }}
 on:
     push:
-        branches:
-            - main
+        branches: [main]
 jobs:
     quality-gate:
         uses: ./.github/workflows/_quality-gate.yml
