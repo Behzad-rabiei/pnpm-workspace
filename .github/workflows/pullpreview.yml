@@ -1,5 +1,4 @@
-# .github/workflows/pullpreview.yml
-name: pullpreview_multi_env
+name: pullpreview
 on:
     push:
         branches: [main]
@@ -10,48 +9,51 @@ concurrency: ${{ github.ref }}
 
 jobs:
     deploy-api:
-        name: Deploy API
+        name: deploy api
         runs-on: ubuntu-latest
-        if: github.event_name == 'schedule' || github.event_name == 'push' || github.event.label.name == 'pullpreview-multi-env' || contains(github.event.pull_request.labels.*.name, 'pullpreview-multi-env')
+        if: github.event_name == 'schedule' || github.event_name == 'push' || github.event.label.name == 'pullpreview' || contains(github.event.pull_request.labels.*.name, 'pullpreview')
         timeout-minutes: 30
         permissions:
-            contents: read # to fetch code (actions/checkout)
-            deployments: write # to delete deployments
-            pull-requests: write # to remove labels
-            statuses: write # to create commit status
+            contents: read
+            deployments: write
+            pull-requests: write
+            statuses: write
         steps:
             - uses: actions/checkout@v4
             - uses: pullpreview/action@v5
               with:
                   deployment_variant: api
-                  label: pullpreview-multi-env
-                  instance_type: micro
                   always_on: main
+                  label: pullpreview
+                  provider: lightsail
+                  instance_type: nano
                   compose_files: docker-compose.api.yml
-
+                  ttl: 48h
               env:
                   AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
                   AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
                   AWS_REGION: 'us-east-1'
     deploy-ui:
-        name: Deploy UI
+        name: deploy ui
         runs-on: ubuntu-latest
-        if: github.event_name == 'schedule' || github.event_name == 'push' || github.event.label.name == 'pullpreview-multi-env' || contains(github.event.pull_request.labels.*.name, 'pullpreview-multi-env')
+        if: github.event_name == 'schedule' || github.event_name == 'push' || github.event.label.name == 'pullpreview' || contains(github.event.pull_request.labels.*.name, 'pullpreview')
         timeout-minutes: 30
         permissions:
-            contents: read # to fetch code (actions/checkout)
-            deployments: write # to delete deployments
-            pull-requests: write # to remove labels
-            statuses: write # to create commit status
+            contents: read
+            deployments: write
+            pull-requests: write
+            statuses: write
         steps:
             - uses: actions/checkout@v4
             - uses: pullpreview/action@v5
               with:
                   deployment_variant: ui
-                  label: pullpreview-multi-env
-                  instance_type: micro
                   always_on: main
+                  label: pullpreview
+                  provider: lightsail
+                  instance_type: nano
                   compose_files: docker-compose.ui.yml
+                  ttl: 48h
 
               env:
                   AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
