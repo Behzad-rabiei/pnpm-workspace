@@ -1,5 +1,4 @@
-name: Review 👀
-run-name: '${{ github.event_name }} • ${{ github.ref_name }}@${{ github.sha }}'
+name: Pull Request 🔄
 
 on:
     pull_request:

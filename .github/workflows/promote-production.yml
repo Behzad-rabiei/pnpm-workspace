@@ -1,4 +1,4 @@
-name: Promote to Production 🚀
+name: Promote Production 🚀
 on:
     workflow_dispatch:
         inputs:
