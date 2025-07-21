@@ -1,0 +1,98 @@
+name: Auto Label PullPreview 🏷️
+
+on:
+  workflow_run:
+    workflows: ["pull-request 🔄"]
+    types:
+      - completed
+
+jobs:
+  add-pullpreview-label:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Get PR number
+        id: get-pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pullRequests } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head: `${context.repo.owner}:${context.payload.workflow_run.head_branch}`,
+                state: 'open'
+            });
+
+            if (pullRequests.length === 0) {
+                console.log('No open PR found for this branch');
+                return;
+            }
+
+            const pr = pullRequests[0];
+            console.log(`Found PR #${pr.number}: ${pr.title}`);
+
+            if (pr.base.ref !== 'main') {
+                console.log(`PR targets ${pr.base.ref}, not main. Skipping.`);
+                return;
+            }
+
+            core.setOutput('pr-number', pr.number);
+            core.setOutput('pr-title', pr.title);
+
+      - name: Check if pullpreview label already exists
+        id: check-label
+        if: steps.get-pr.outputs.pr-number
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = ${{ steps.get-pr.outputs.pr-number }};
+
+            const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber
+            });
+
+            const hasPullPreviewLabel = labels.some(label => label.name === 'pullpreview');
+            console.log(`PR #${prNumber} has pullpreview label: ${hasPullPreviewLabel}`);
+
+            core.setOutput('has-label', hasPullPreviewLabel);
+
+      - name: Add pullpreview label
+        if: >
+          steps.get-pr.outputs.pr-number &&
+          steps.check-label.outputs.has-label == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = ${{ steps.get-pr.outputs.pr-number }};
+
+            await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: ['pullpreview']
+            });
+
+            console.log(`✅ Added 'pullpreview' label to PR #${prNumber}`);
+
+      - name: Comment on PR
+        if: >
+          steps.get-pr.outputs.pr-number &&
+          steps.check-label.outputs.has-label == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = ${{ steps.get-pr.outputs.pr-number }};
+
+            await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: '🚀 **PullPreview label added!** Your preview deployment will be available shortly.'
+            });

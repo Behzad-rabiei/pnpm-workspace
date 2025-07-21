@@ -1,4 +1,4 @@
-name: Staging 🚧
+name: staging 🚧
 on:
     push:
         branches:

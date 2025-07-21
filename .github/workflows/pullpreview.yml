@@ -1,61 +1,61 @@
-name: pullpreview
+name: pullpreview 👀
 on:
-    push:
-        branches: [main]
-    pull_request:
-        types: [labeled, unlabeled, synchronize, closed, reopened]
+  push:
+    branches: [main]
+  pull_request:
+    types: [labeled, unlabeled, synchronize, closed, reopened]
 
 concurrency: ${{ github.ref }}
 
 jobs:
-    deploy-api:
-        name: deploy api
-        runs-on: ubuntu-latest
-        if: github.event_name == 'schedule' || github.event_name == 'push' || github.event.label.name == 'pullpreview' || contains(github.event.pull_request.labels.*.name, 'pullpreview')
-        timeout-minutes: 30
-        permissions:
-            contents: read
-            deployments: write
-            pull-requests: write
-            statuses: write
-        steps:
-            - uses: actions/checkout@v4
-            - uses: pullpreview/action@v5
-              with:
-                  deployment_variant: api
-                  always_on: main
-                  label: pullpreview
-                  provider: lightsail
-                  instance_type: nano
-                  compose_files: docker-compose.api.yml
-                  ttl: 48h
-              env:
-                  AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
-                  AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
-                  AWS_REGION: 'us-east-1'
-    deploy-ui:
-        name: deploy ui
-        runs-on: ubuntu-latest
-        if: github.event_name == 'schedule' || github.event_name == 'push' || github.event.label.name == 'pullpreview' || contains(github.event.pull_request.labels.*.name, 'pullpreview')
-        timeout-minutes: 30
-        permissions:
-            contents: read
-            deployments: write
-            pull-requests: write
-            statuses: write
-        steps:
-            - uses: actions/checkout@v4
-            - uses: pullpreview/action@v5
-              with:
-                  deployment_variant: ui
-                  always_on: main
-                  label: pullpreview
-                  provider: lightsail
-                  instance_type: nano
-                  compose_files: docker-compose.ui.yml
-                  ttl: 48h
+  deploy-api:
+    name: deploy api
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'push' || github.event.label.name == 'pullpreview' || contains(github.event.pull_request.labels.*.name, 'pullpreview')
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+      statuses: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pullpreview/action@v5
+        with:
+          deployment_variant: api
+          always_on: main
+          label: pullpreview
+          provider: lightsail
+          instance_type: nano
+          compose_files: docker-compose.api.yml
+          ttl: 48h
+        env:
+          AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          AWS_REGION: "us-east-1"
+  deploy-ui:
+    name: deploy ui
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'push' || github.event.label.name == 'pullpreview' || contains(github.event.pull_request.labels.*.name, 'pullpreview')
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+      statuses: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pullpreview/action@v5
+        with:
+          deployment_variant: ui
+          always_on: main
+          label: pullpreview
+          provider: lightsail
+          instance_type: nano
+          compose_files: docker-compose.ui.yml
+          ttl: 48h
 
-              env:
-                  AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
-                  AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
-                  AWS_REGION: 'us-east-1'
+        env:
+          AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          AWS_REGION: "us-east-1"
