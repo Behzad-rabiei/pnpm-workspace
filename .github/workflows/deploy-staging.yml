@@ -1,5 +1,6 @@
-name: Staging 🚧
-run-name: Staging 🚧
+name: Deploy to Staging 🚧
+run-name: Deploy to Staging 🚧
+
 on:
     push:
         branches: [main]
