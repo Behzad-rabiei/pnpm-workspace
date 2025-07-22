@@ -28,7 +28,7 @@ services:
         # ─── DYNAMIC CONFIG (labels) ───────────────────────────────────
         labels:
             # ---- Dashboard router --------------------------------------
-            - traefik.http.routers.traefik.rule=Host(`${PULLPREVIEW_PUBLIC_DNS}`)
+            - traefik.http.routers.traefik.rule=Host(`traefik.${PULLPREVIEW_PUBLIC_DNS}`)
             - traefik.http.routers.traefik.entrypoints=web
             - traefik.http.routers.traefik.service=api@internal
             - traefik.http.routers.traefik.middlewares=traefik-auth
