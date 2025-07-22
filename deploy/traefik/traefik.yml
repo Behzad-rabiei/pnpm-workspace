@@ -1,0 +1,28 @@
+entryPoints:
+    web:
+        address: ':80'
+        http:
+            redirections:
+                entryPoint:
+                    to: websecure
+                    scheme: https
+
+    websecure:
+        address: ':443'
+        http:
+            tls:
+                certificates: # use the wildcard cert you already have
+                    - certFile: /certs/${DOMAIN}.pem
+                      keyFile: /certs/${DOMAIN}.key
+
+serversTransport: # match Nginx’s 30-minute time-outs
+    forwardingTimeouts:
+        dialTimeout: 1800000 # 30 min
+        responseHeaderTimeout: 1800000
+        idleConnTimeout: 1800000
+
+providers:
+    docker:
+        exposedByDefault: false # only route containers you label
+    file:
+        filename: /dynamic.yml # see §3 for the deny-all router
