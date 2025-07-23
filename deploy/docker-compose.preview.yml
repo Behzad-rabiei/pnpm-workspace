@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+    traefik:
+        labels:
+            - traefik.http.routers.traefik.rule=Host(`${PULLPREVIEW_PUBLIC_DNS}`) && (PathPrefix(`/traefik-dashboard`) || PathPrefix(`/api`))
+            - traefik.http.routers.traefik.entrypoints=web
+            - traefik.http.routers.traefik.service=api@internal
+
+    ui:
+        labels:
+            - traefik.http.routers.ui.rule=Host(`${PULLPREVIEW_PUBLIC_DNS}`)
+
+    api:
+        labels:
+            - traefik.http.routers.api.rule=Host(`${PULLPREVIEW_PUBLIC_DNS}`) && PathPrefix(`/api`)

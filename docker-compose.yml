@@ -17,6 +17,8 @@ services:
             - --api=true # enable API + dashboard (default dashboard=true)
             - --providers.docker=true
             - --entrypoints.web.address=:80
+            - --metrics.prometheus=true
+            - --metrics.prometheus.addrouterslabels=true
 
         # expose only port 80; no raw 8080 any more
         ports:

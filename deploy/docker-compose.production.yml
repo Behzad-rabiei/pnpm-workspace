@@ -1,0 +1,21 @@
+# docker/compose.production.yml
+version: '3.9'
+services:
+    traefik:
+        labels:
+            - traefik.http.routers.traefik.rule=Host(`infra.example.com`) && (PathPrefix(`/traefik-dashboard`) || PathPrefix(`/api`))
+            - traefik.http.routers.traefik.entrypoints=web
+            - traefik.http.routers.traefik.service=api@internal
+            - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_USERS}
+
+    ui:
+        build: null
+        image: tag
+        labels:
+            - traefik.http.routers.ui.rule=Host(`app.example.com`)
+
+    api:
+        build: null
+        image: tag
+        labels:
+            - traefik.http.routers.api.rule=Host(`app.example.com`) && PathPrefix(`/api`)
