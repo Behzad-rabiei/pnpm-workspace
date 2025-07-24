@@ -35,45 +35,45 @@ services:
     ui:
         build:
             context: ..
-            dockerfile: Dockerfile
+            dockerfile: docker/Dockerfile
             target: ui
         restart: unless-stopped
         labels: *ui_labels
         networks: [web]
-        healthcheck:
-            test:
-                [
-                    'CMD',
-                    'wget',
-                    '--quiet',
-                    '--tries=1',
-                    '--spider',
-                    'http://localhost:8080',
-                ]
-            interval: 30s
-            timeout: 10s
-            retries: 3
-            start_period: 30s
+        # healthcheck:
+        #     test:
+        #         [
+        #             'CMD',
+        #             'wget',
+        #             '--quiet',
+        #             '--tries=1',
+        #             '--spider',
+        #             'http://localhost:8080',
+        #         ]
+        #     interval: 30s
+        #     timeout: 10s
+        #     retries: 3
+        #     start_period: 30s
 
     api:
         build:
             context: ..
-            dockerfile: Dockerfile
+            dockerfile: docker/Dockerfile
             target: api
         restart: unless-stopped
         labels: *api_labels
         networks: [web]
-        healthcheck:
-            test:
-                [
-                    'CMD',
-                    'wget',
-                    '--quiet',
-                    '--tries=1',
-                    '--spider',
-                    'http://localhost:3000',
-                ]
-            interval: 30s
-            timeout: 10s
-            retries: 3
-            start_period: 40s
+        # healthcheck:
+        #     test:
+        #         [
+        #             'CMD',
+        #             'wget',
+        #             '--quiet',
+        #             '--tries=1',
+        #             '--spider',
+        #             'http://localhost:3000',
+        #         ]
+        #     interval: 30s
+        #     timeout: 10s
+        #     retries: 3
+        #     start_period: 40s

@@ -18,5 +18,4 @@ jobs:
         uses: ./.github/workflows/_build-and-push.yml
         with:
             ref: ${{ github.sha }}
-            tag-suffix: pr-${{ github.event.pull_request.number }}
             push: false

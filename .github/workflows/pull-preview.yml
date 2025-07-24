@@ -1,9 +1,8 @@
 name: Pull Preview 👀
 run-name: Pull Preview 👀
 on:
-    push:
-        branches: [main]
     pull_request:
+        branches: [main]
         types: [labeled, unlabeled, synchronize, closed, reopened]
 
 concurrency: ${{ github.ref }}
@@ -27,7 +26,7 @@ jobs:
                   label: pullpreview
                   provider: lightsail
                   instance_type: micro
-                  compose_files: /docker/docker-compose.base.yml,/deploy/docker-compose.preview.yml
+                  compose_files: docker/docker-compose.base.yml,docker/docker-compose.preview.yml
                   ttl: 48h
               env:
                   AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'

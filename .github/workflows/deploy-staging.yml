@@ -12,10 +12,25 @@ concurrency:
     group: staging-deploy-${{ github.ref }}
     cancel-in-progress: true
 
+env:
+    IMAGE_PREFIX: ghcr.io/behzad-rabiei/pnpm-workspace
+
 jobs:
     deploy:
         runs-on: ubuntu-latest
         if: github.event.workflow_run.conclusion == 'success'
         environment: staging
         steps:
-            - name: Deploy to staging environment
+            - name: Get commit SHA from main workflow
+              id: get-sha
+              run: |
+                  echo "commit_sha=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_OUTPUT
+                  echo "image_tag=main-${{ github.event.workflow_run.head_sha }}" >> $GITHUB_OUTPUT
+
+            # - name: Deploy to staging environment
+            #   run: |
+            #       echo "Deploying images with tag: ${{ steps.get-sha.outputs.image_tag }}"
+            #       echo "API Image: ${{ env.IMAGE_PREFIX }}/api:${{ steps.get-sha.outputs.image_tag }}"
+            #       echo "UI Image: ${{ env.IMAGE_PREFIX }}/ui:${{ steps.get-sha.outputs.image_tag }}"
+            #       echo "Workflows Image: ${{ env.IMAGE_PREFIX }}/workflows:${{ steps.get-sha.outputs.image_tag }}"
+            #       # Add your actual deployment commands here

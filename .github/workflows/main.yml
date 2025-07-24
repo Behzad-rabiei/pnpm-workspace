@@ -18,6 +18,6 @@ jobs:
         uses: ./.github/workflows/_build-and-push.yml
         with:
             ref: ${{ github.sha }}
-            tag-suffix: main-${{ github.sha }}
             push: true
-            latest: true
+        outputs:
+            image-tag: ${{ needs.build-and-push.outputs.image-tag }}
