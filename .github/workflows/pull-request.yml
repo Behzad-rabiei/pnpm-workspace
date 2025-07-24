@@ -1,10 +1,9 @@
-name: Review 👀
-run-name: '${{ github.event_name }} • ${{ github.ref_name }}@${{ github.sha }}'
+name: Pull Request 🔍️
+run-name: Pull Request 🔍️
 
 on:
     pull_request:
-        branches:
-            - main
+        branches: [main]
 
 concurrency:
     group: 'ci-${{ github.event.pull_request.number || github.ref }}'
@@ -14,11 +13,10 @@ jobs:
     quality-gate:
         uses: ./.github/workflows/_quality-gate.yml
 
-    build-review:
+    build:
         needs: quality-gate
         uses: ./.github/workflows/_build-and-push.yml
         with:
             ref: ${{ github.sha }}
             tag-suffix: pr-${{ github.event.pull_request.number }}
-            push: true
-            latest: false
+            push: false

@@ -1,0 +1,79 @@
+version: '3.9'
+
+networks:
+    web:
+
+x-ui-labels: &ui_labels
+    traefik.enable: 'true'
+
+x-api-labels: &api_labels
+    traefik.enable: 'true'
+    traefik.http.routers.api.entrypoints: web
+    traefik.http.routers.api.middlewares: api-strip,api-cors
+    traefik.http.services.api.loadbalancer.server.port: '3000'
+    traefik.http.middlewares.api-strip.stripprefix.prefixes: '/api'
+    traefik.http.middlewares.api-cors.headers.accesscontrolallowmethods: 'GET,OPTIONS,PUT,POST,DELETE'
+    traefik.http.middlewares.api-cors.headers.accesscontrolalloworiginlist: '*'
+
+services:
+    traefik:
+        image: traefik:v3.4
+        container_name: traefik
+        ports:
+            - '80:80'
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - ./traefik.yml:/etc/traefik/traefik.yml:ro
+        networks: [web]
+        healthcheck:
+            test: ['CMD', 'traefik', 'healthcheck', '--ping']
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 10s
+
+    ui:
+        build:
+            context: ..
+            dockerfile: Dockerfile
+            target: ui
+        restart: unless-stopped
+        labels: *ui_labels
+        networks: [web]
+        healthcheck:
+            test:
+                [
+                    'CMD',
+                    'wget',
+                    '--quiet',
+                    '--tries=1',
+                    '--spider',
+                    'http://localhost:8080',
+                ]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 30s
+
+    api:
+        build:
+            context: ..
+            dockerfile: Dockerfile
+            target: api
+        restart: unless-stopped
+        labels: *api_labels
+        networks: [web]
+        healthcheck:
+            test:
+                [
+                    'CMD',
+                    'wget',
+                    '--quiet',
+                    '--tries=1',
+                    '--spider',
+                    'http://localhost:3000',
+                ]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s

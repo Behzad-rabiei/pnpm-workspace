@@ -1,11 +1,15 @@
 name: Quality Gate 🛡️
+run-name: Quality Gate 🛡️
 
 on:
     workflow_call:
 
+env:
+    PNPM_CACHE_DIR: ~/.local/share/pnpm/store
+
 jobs:
     code-quality:
-        name: 'Code Quality ☑️ (OS: ${{ matrix.os }}, Node: ${{ matrix.node-version }}, PNPM: ${{ matrix.pnpm-version }})'
+        name: 'Code Quality 🧹 (OS: ${{ matrix.os }}, Node: ${{ matrix.node-version }}, PNPM: ${{ matrix.pnpm-version }})'
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
@@ -27,6 +31,14 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: pnpm
+
+            - name: Cache pnpm store
+              uses: actions/cache@v4
+              with:
+                  path: ${{ env.PNPM_CACHE_DIR }}
+                  key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
@@ -57,6 +69,14 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: pnpm
+
+            - name: Cache pnpm store
+              uses: actions/cache@v4
+              with:
+                  path: ${{ env.PNPM_CACHE_DIR }}
+                  key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
@@ -98,6 +118,14 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: pnpm
+
+            - name: Cache pnpm store
+              uses: actions/cache@v4
+              with:
+                  path: ${{ env.PNPM_CACHE_DIR }}
+                  key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile

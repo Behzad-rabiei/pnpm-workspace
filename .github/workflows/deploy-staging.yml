@@ -1,0 +1,21 @@
+name: Deploy to Staging 🚧
+run-name: Deploy to Staging 🚧
+
+on:
+    workflow_run:
+        workflows: ['main 🚢']
+        types:
+            - completed
+        branches: [main]
+
+concurrency:
+    group: staging-deploy-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        if: github.event.workflow_run.conclusion == 'success'
+        environment: staging
+        steps:
+            - name: Deploy to staging environment
