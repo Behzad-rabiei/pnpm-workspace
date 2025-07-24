@@ -26,8 +26,8 @@ jobs:
                   label: pullpreview
                   provider: lightsail
                   instance_type: micro
-                  app-path: ./docker
-                  compose-files: |
+                  app_path: ./docker
+                  compose_files: |
                       docker-compose.base.yml,
                       docker-compose.preview.yml
                   ttl: 48h
