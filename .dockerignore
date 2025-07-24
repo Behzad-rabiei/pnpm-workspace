@@ -89,12 +89,6 @@ pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Exclude docker-compose files except the ones needed for PullPreview
-docker-compose*.yml
-!docker/docker-compose.base.yml
-!docker/docker-compose.preview.yml
-Dockerfile.*
-.dockerignore
 
 .npmrc
 .yarnrc
