@@ -1,5 +1,5 @@
-name: Pull Request Check 🔍️
-run-name: Pull Request Check 🔍️
+name: Pull Request 🔍️
+run-name: Pull Request 🔍️
 
 on:
     pull_request:

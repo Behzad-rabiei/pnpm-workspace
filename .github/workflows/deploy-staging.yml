@@ -3,7 +3,7 @@ run-name: Deploy to Staging 🚧
 
 on:
     workflow_run:
-        workflows: ['main']
+        workflows: ['main 🚢']
         types:
             - completed
         branches: [main]
