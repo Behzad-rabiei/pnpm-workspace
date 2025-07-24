@@ -34,8 +34,8 @@ services:
 
     ui:
         build:
-            context: .
-            dockerfile: ./Dockerfile
+            context: ..
+            dockerfile: docker/Dockerfile
             target: ui
         restart: unless-stopped
         labels: *ui_labels
@@ -57,8 +57,8 @@ services:
 
     api:
         build:
-            context: .
-            dockerfile: ./Dockerfile
+            context: ..
+            dockerfile: docker/Dockerfile
             target: api
         restart: unless-stopped
         labels: *api_labels
