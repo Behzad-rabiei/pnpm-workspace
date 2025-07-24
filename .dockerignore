@@ -70,11 +70,13 @@ vitest.setup.*
 jest.config.*
 **/jest.config.*
 tsconfig.vitest.json
+tsconfig.node.json
+tsconfig.app.json
+tsconfig.build.json
 
 tsconfig.*.json
 !tsconfig.json
-**/tsconfig.*.json
-!**/tsconfig.json
+!tsconfig.base.json
 
 temp
 tmp
