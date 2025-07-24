@@ -19,5 +19,3 @@ jobs:
         with:
             ref: ${{ github.sha }}
             push: true
-        outputs:
-            image-tag: ${{ needs.build-and-push.outputs.image-tag }}
