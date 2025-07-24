@@ -13,11 +13,10 @@ jobs:
     quality-gate:
         uses: ./.github/workflows/_quality-gate.yml
 
-    build-review:
+    build:
         needs: quality-gate
         uses: ./.github/workflows/_build-and-push.yml
         with:
             ref: ${{ github.sha }}
             tag-suffix: pr-${{ github.event.pull_request.number }}
-            push: true
-            latest: false
+            push: false

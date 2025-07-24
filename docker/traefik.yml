@@ -1,0 +1,14 @@
+api: true
+ping: true
+
+providers:
+    docker:
+        exposedByDefault: false
+
+entryPoints:
+    web:
+        address: ':80'
+
+metrics:
+    prometheus:
+        addRoutersLabels: true

@@ -1,0 +1,23 @@
+name: main 🚢
+run-name: main 🚢
+
+on:
+    push:
+        branches: [main]
+
+concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    quality-gate:
+        uses: ./.github/workflows/_quality-gate.yml
+
+    build-and-push:
+        needs: quality-gate
+        uses: ./.github/workflows/_build-and-push.yml
+        with:
+            ref: ${{ github.sha }}
+            tag-suffix: main-${{ github.sha }}
+            push: true
+            latest: true

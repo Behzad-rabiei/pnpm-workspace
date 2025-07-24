@@ -26,7 +26,7 @@ jobs:
                   always_on: main
                   label: pullpreview
                   provider: lightsail
-                  instance_type: small
+                  instance_type: micro
                   compose_files: /deploy/docker-compose.base.yml,/deploy/docker-compose.preview.yml
                   ttl: 48h
               env:
