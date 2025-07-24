@@ -5,7 +5,7 @@ on:
     workflow_dispatch:
         inputs:
             commit:
-                description: 'Commit SHA (or "main-<sha>") of the staging image to promote'
+                description: 'Commit SHA of the staging image to promote'
                 required: true
                 type: string
 
@@ -15,28 +15,39 @@ permissions:
 
 env:
     REGISTRY: ghcr.io
-    REPO: ${{ github.repository_owner }}/${{ github.event.repository.name }}
+    IMAGE_PREFIX: ghcr.io/behzad-rabiei/pnpm-workspace
 
 jobs:
     promote:
-        runs-on: ${{ matrix.os }}
+        runs-on: ubuntu-latest
         environment: production
         strategy:
             matrix:
-                os: [ubuntu-latest]
+                image: [api, ui, workflows]
         steps:
-            - name: Login to GHCR
-              uses: docker/login-action@v2
+            - name: Login to GitHub Container Registry
+              uses: docker/login-action@v3
               with:
-                  registry: ${{ env.REGISTRY }}
-                  username: ${{ github.repository_owner }}
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Retag and push api/ui/workflows as :prod
+            - name: Promote ${{ matrix.image }} to production
               run: |
-                  for img in api ui workflows; do
-                    docker pull $REGISTRY/$REPO/$img:${{ github.event.inputs.commit }}
-                    docker tag  $REGISTRY/$REPO/$img:${{ github.event.inputs.commit }} \
-                                $REGISTRY/$REPO/$img:prod
-                    docker push $REGISTRY/$REPO/$img:prod
-                  done
+                  SOURCE_TAG="main-${{ inputs.commit }}"
+                  PROD_TAG="prod-${{ inputs.commit }}"
+
+                  echo "Promoting ${{ matrix.image }} from $SOURCE_TAG to $PROD_TAG"
+
+                  # Pull the staging image
+                  docker pull ${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:$SOURCE_TAG
+
+                  # Tag for production
+                  docker tag ${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:$SOURCE_TAG ${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:$PROD_TAG
+                  docker tag ${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:$SOURCE_TAG ${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:production
+
+                  # Push production tags
+                  docker push ${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:$PROD_TAG
+                  docker push ${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:production
+
+                  echo "Successfully promoted ${{ matrix.image }} to production"
