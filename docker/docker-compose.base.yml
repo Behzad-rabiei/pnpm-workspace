@@ -5,15 +5,18 @@ networks:
 
 x-ui-labels: &ui_labels
   traefik.enable: "true"
+  traefik.http.routers.ui.entrypoints: websecure
+  traefik.http.routers.ui.tls.certresolver: cf
 
 x-api-labels: &api_labels
   traefik.enable: "true"
-  traefik.http.routers.api.entrypoints: web
   traefik.http.routers.api.middlewares: api-strip,api-cors
   traefik.http.services.api.loadbalancer.server.port: "3000"
   traefik.http.middlewares.api-strip.stripprefix.prefixes: "/api"
   traefik.http.middlewares.api-cors.headers.accesscontrolallowmethods: "GET,OPTIONS,PUT,POST,DELETE"
   traefik.http.middlewares.api-cors.headers.accesscontrolalloworiginlist: "*"
+  traefik.http.routers.api.entrypoints: websecure
+  traefik.http.routers.api.tls.certresolver: cf
 
 services:
   traefik:
@@ -21,9 +24,12 @@ services:
     container_name: traefik
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik.yml:/etc/traefik/traefik.yml:ro
+    env_file:
+      - cloudflare.env
     networks: [web]
     healthcheck:
       test: ["CMD", "traefik", "healthcheck", "--ping"]

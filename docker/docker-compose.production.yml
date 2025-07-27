@@ -10,13 +10,13 @@ services:
   ui:
     image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:production
     labels:
-      - traefik.http.routers.ui.rule=Host(`18.199.218.205`)
+      - traefik.http.routers.ui.rule=Host(`logid.xyz`)
       - com.centurylinklabs.watchtower.enable=true
 
   api:
     image: ghcr.io/behzad-rabiei/pnpm-workspace/api:production
     labels:
-      - traefik.http.routers.api.rule=Host(`18.199.218.205`) && PathPrefix(`/api`)
+      - traefik.http.routers.api.rule=Host(`api.logid.xyz`) && PathPrefix(`/api`)
       - com.centurylinklabs.watchtower.enable=true
 
   #   workflows:
