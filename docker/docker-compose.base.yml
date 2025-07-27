@@ -1,79 +1,74 @@
-version: '3.9'
+version: "3.9"
 
 networks:
-    web:
+  web:
 
 x-ui-labels: &ui_labels
-    traefik.enable: 'true'
+  traefik.enable: "true"
 
 x-api-labels: &api_labels
-    traefik.enable: 'true'
-    traefik.http.routers.api.entrypoints: web
-    traefik.http.routers.api.middlewares: api-strip,api-cors
-    traefik.http.services.api.loadbalancer.server.port: '3000'
-    traefik.http.middlewares.api-strip.stripprefix.prefixes: '/api'
-    traefik.http.middlewares.api-cors.headers.accesscontrolallowmethods: 'GET,OPTIONS,PUT,POST,DELETE'
-    traefik.http.middlewares.api-cors.headers.accesscontrolalloworiginlist: '*'
+  traefik.enable: "true"
+  traefik.http.routers.api.entrypoints: web
+  traefik.http.routers.api.middlewares: api-strip,api-cors
+  traefik.http.services.api.loadbalancer.server.port: "3000"
+  traefik.http.middlewares.api-strip.stripprefix.prefixes: "/api"
+  traefik.http.middlewares.api-cors.headers.accesscontrolallowmethods: "GET,OPTIONS,PUT,POST,DELETE"
+  traefik.http.middlewares.api-cors.headers.accesscontrolalloworiginlist: "*"
 
 services:
-    traefik:
-        image: traefik:v3.4
-        container_name: traefik
-        ports:
-            - '80:80'
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock:ro
-            - ./traefik.yml:/etc/traefik/traefik.yml:ro
-        networks: [web]
-        healthcheck:
-            test: ['CMD', 'traefik', 'healthcheck', '--ping']
-            interval: 30s
-            timeout: 10s
-            retries: 3
-            start_period: 10s
+  traefik:
+    image: traefik:v3.4
+    container_name: traefik
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+    networks: [web]
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
-    ui:
-        build:
-            context: ..
-            dockerfile: docker/Dockerfile
-            target: ui
-        restart: unless-stopped
-        labels: *ui_labels
-        networks: [web]
-        # healthcheck:
-        #     test:
-        #         [
-        #             'CMD',
-        #             'wget',
-        #             '--quiet',
-        #             '--tries=1',
-        #             '--spider',
-        #             'http://localhost:8080',
-        #         ]
-        #     interval: 30s
-        #     timeout: 10s
-        #     retries: 3
-        #     start_period: 30s
+  ui:
+    container_name: ui
+    depends_on:
+      - traefik
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: ui
+    restart: unless-stopped
+    labels: *ui_labels
+    networks: [web]
 
-    api:
-        build:
-            context: ..
-            dockerfile: docker/Dockerfile
-            target: api
-        restart: unless-stopped
-        labels: *api_labels
-        networks: [web]
-        # healthcheck:
-        #     test:
-        #         [
-        #             'CMD',
-        #             'wget',
-        #             '--quiet',
-        #             '--tries=1',
-        #             '--spider',
-        #             'http://localhost:3000',
-        #         ]
-        #     interval: 30s
-        #     timeout: 10s
-        #     retries: 3
-        #     start_period: 40s
+  api:
+    container_name: api
+    depends_on:
+      - traefik
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: api
+    restart: unless-stopped
+    labels: *api_labels
+    networks: [web]
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower-staging
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=60
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_ROLLING_RESTART=true
+    command: --interval 60 --cleanup
+    labels:
+      - com.centurylinklabs.watchtower.enable=false
+    networks: [web]
