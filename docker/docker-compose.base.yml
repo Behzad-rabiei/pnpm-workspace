@@ -28,6 +28,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - letsencrypt:/letsencrypt
     env_file:
       - cloudflare.env
     networks: [web]
@@ -78,3 +79,6 @@ services:
     labels:
       - com.centurylinklabs.watchtower.enable=false
     networks: [web]
+
+volumes:
+  letsencrypt:

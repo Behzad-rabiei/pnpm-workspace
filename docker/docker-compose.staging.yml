@@ -1,22 +1,27 @@
 version: "3.9"
 
 services:
-  traefik:
-    labels:
-      - traefik.http.routers.traefik.rule=Host(`infra.example.com`) && (PathPrefix(`/traefik-dashboard`) || PathPrefix(`/api`))
-      - traefik.http.routers.traefik.entrypoints=web
-      - traefik.http.routers.traefik.service=api@internal
-      - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_USERS}
   ui:
     image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:latest
     labels:
       - traefik.http.routers.ui.rule=Host(`staging.logid.xyz`)
+      - traefik.enable=true
+      - traefik.http.routers.ui.entrypoints=websecure
+      - traefik.http.routers.ui.tls.certresolver=cf
       - com.centurylinklabs.watchtower.enable=true
 
   api:
     image: ghcr.io/behzad-rabiei/pnpm-workspace/api:latest
     labels:
       - traefik.http.routers.api.rule=Host(`api-staging.logid.xyz`) && PathPrefix(`/api`)
+      - traefik.enable=true
+      - traefik.http.routers.api.middlewares=api-strip,api-cors
+      - traefik.http.services.api.loadbalancer.server.port=3000
+      - traefik.http.middlewares.api-strip.stripprefix.prefixes=/api
+      - traefik.http.middlewares.api-cors.headers.accesscontrolallowmethods=GET,OPTIONS,PUT,POST,DELETE
+      - traefik.http.middlewares.api-cors.headers.accesscontrolalloworiginlist=*
+      - traefik.http.routers.api.entrypoints=websecure
+      - traefik.http.routers.api.tls.certresolver=cf
       - com.centurylinklabs.watchtower.enable=true
 
   # workflows:
