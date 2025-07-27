@@ -6,7 +6,9 @@ networks:
 
 x-ui-labels: &ui_labels
   traefik.enable: "true"
+  traefik.http.routers.ui.entrypoints: web
   traefik.http.routers.ui.rule: Host(`54.93.81.139`)
+  traefik.http.services.ui.loadbalancer.server.port: "8080"
   com.centurylinklabs.watchtower.enable: "true"
 
 x-api-labels: &api_labels
@@ -38,17 +40,21 @@ services:
       start_period: 10s
   ui:
     # build: null
-    name: ui-staging
+    container_name: ui-staging
     image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:latest
     restart: unless-stopped
+    depends_on:
+      - traefik
     networks: [web]
     labels: *ui_labels
 
   api:
     # build: null
-    name: api-staging
+    container_name: api-staging
     image: ghcr.io/behzad-rabiei/pnpm-workspace/api:latest
     restart: unless-stopped
+    depends_on:
+      - traefik
     labels: *api_labels
     networks: [web]
 
@@ -60,7 +66,6 @@ services:
   #     - com.centurylinklabs.watchtower.enable=true
 
   watchtower:
-    name: watchtower-staging
     image: containrrr/watchtower:latest
     container_name: watchtower-staging
     restart: unless-stopped
