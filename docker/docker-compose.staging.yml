@@ -12,6 +12,7 @@ services:
     build: null
     image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:latest
     labels:
+      - traefik.enable=true
       - traefik.http.routers.ui.rule=Host(`54.93.81.139`)
       - com.centurylinklabs.watchtower.enable=true
 
@@ -19,6 +20,7 @@ services:
     build: null
     image: ghcr.io/behzad-rabiei/pnpm-workspace/api:latest
     labels:
+      - traefik.enable=true
       - traefik.http.routers.api.rule=Host(`54.93.81.139`) && PathPrefix(`/api`)
       - com.centurylinklabs.watchtower.enable=true
 
