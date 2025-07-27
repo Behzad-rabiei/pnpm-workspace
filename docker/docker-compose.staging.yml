@@ -1,1 +1,46 @@
--
+# docker/docker-compose.staging.yml
+version: "3.9"
+services:
+  traefik:
+    labels:
+      - traefik.http.routers.traefik.rule=Host(`infra.example.com`) && (PathPrefix(`/traefik-dashboard`) || PathPrefix(`/api`))
+      - traefik.http.routers.traefik.entrypoints=web
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_USERS}
+
+  ui:
+    build: null
+    image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:latest
+    labels:
+      - traefik.http.routers.ui.rule=Host(`54.93.81.139`)
+      - com.centurylinklabs.watchtower.enable=true
+
+  api:
+    build: null
+    image: ghcr.io/behzad-rabiei/pnpm-workspace/api:latest
+    labels:
+      - traefik.http.routers.api.rule=Host(`54.93.81.139`) && PathPrefix(`/api`)
+      - com.centurylinklabs.watchtower.enable=true
+
+  # workflows:
+  #   build: null
+  #   image: ghcr.io/behzad-rabiei/pnpm-workspace/workflows:latest
+  #   restart: unless-stopped
+  #   labels:
+  #     - com.centurylinklabs.watchtower.enable=true
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower-staging
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=60
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_ROLLING_RESTART=true
+    command: --interval 60 --cleanup
+    labels:
+      - com.centurylinklabs.watchtower.enable=false

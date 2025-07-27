@@ -1,21 +1,46 @@
-# docker/compose.production.yml
-version: '3.9'
+# docker/docker-compose.production.yml
+version: "3.9"
 services:
-    traefik:
-        labels:
-            - traefik.http.routers.traefik.rule=Host(`infra.example.com`) && (PathPrefix(`/traefik-dashboard`) || PathPrefix(`/api`))
-            - traefik.http.routers.traefik.entrypoints=web
-            - traefik.http.routers.traefik.service=api@internal
-            - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_USERS}
+  traefik:
+    labels:
+      - traefik.http.routers.traefik.rule=Host(`infra.example.com`) && (PathPrefix(`/traefik-dashboard`) || PathPrefix(`/api`))
+      - traefik.http.routers.traefik.entrypoints=web
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_USERS}
 
-    ui:
-        build: null
-        image: tag
-        labels:
-            - traefik.http.routers.ui.rule=Host(`app.example.com`)
+  ui:
+    build: null
+    image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:production
+    labels:
+      - traefik.http.routers.ui.rule=Host(`app.example.com`)
+      - com.centurylinklabs.watchtower.enable=true
 
-    api:
-        build: null
-        image: tag
-        labels:
-            - traefik.http.routers.api.rule=Host(`app.example.com`) && PathPrefix(`/api`)
+  api:
+    build: null
+    image: ghcr.io/behzad-rabiei/pnpm-workspace/api:production
+    labels:
+      - traefik.http.routers.api.rule=Host(`app.example.com`) && PathPrefix(`/api`)
+      - com.centurylinklabs.watchtower.enable=true
+
+  #   workflows:
+  #     build: null
+  #     image: ghcr.io/behzad-rabiei/pnpm-workspace/workflows:production
+  #     restart: unless-stopped
+  #     labels:
+  #       - com.centurylinklabs.watchtower.enable=true
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower-production
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=60
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_ROLLING_RESTART=true
+    command: --interval 60 --cleanup
+    labels:
+      - com.centurylinklabs.watchtower.enable=false
