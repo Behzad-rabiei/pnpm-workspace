@@ -3,7 +3,7 @@ ping: true
 
 # Configure logging to stdout (Docker-friendly)
 log:
-  level: INFO
+  level: DEBUG
   format: json
 
 # Configure access logs to stdout
@@ -21,7 +21,8 @@ entryPoints:
           permanent: true
   websecure: # :443 – real traffic terminates here
     address: ":443"
-
+    http:
+      tls: {}
 certificatesResolvers:
   cf:
     acme:
