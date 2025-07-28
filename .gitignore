@@ -31,3 +31,7 @@ changeset/
 
 # Coverage
 coverage/
+
+
+#env
+*.env

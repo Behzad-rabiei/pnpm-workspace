@@ -1,29 +1,38 @@
 api: true
 ping: true
 
+# Configure logging to stdout (Docker-friendly)
+log:
+  level: INFO
+  format: json
+
+# Configure access logs to stdout
+accessLog:
+  format: json
+
 entryPoints:
-    web: # :80  – only used to redirect to HTTPS
-        address: ':80'
-        http:
-            redirections:
-                entryPoint:
-                    to: websecure
-                    scheme: https # 301 → https://
-                    permanent: true
-    websecure: # :443 – real traffic terminates here
-        address: ':443'
+  web: # :80  – only used to redirect to HTTPS
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https # 301 → https://
+          permanent: true
+  websecure: # :443 – real traffic terminates here
+    address: ":443"
 
 certificatesResolvers:
-    cf:
-        acme:
-            email: '[email protected]'
-            storage: /etc/traefik/acme.json # will be created by Traefik
-            dnsChallenge:
-                provider: cloudflare # DNS‑01 → works even behind Cloudflare proxy
-                resolvers: ['1.1.1.1:53', '8.8.8.8:53']
-                delayBeforeCheck: 0
+  cf:
+    acme:
+      email: "[email protected]"
+      storage: /etc/traefik/acme.json # will be created by Traefik
+      dnsChallenge:
+        provider: cloudflare # DNS‑01 → works even behind Cloudflare proxy
+        resolvers: ["1.1.1.1:53", "8.8.8.8:53"]
+        delayBeforeCheck: 0
 providers:
-    docker:
-        exposedByDefault: false
+  docker:
+    exposedByDefault: false
 metrics:
-    prometheus: {}
+  prometheus: {}
