@@ -1,14 +1,21 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
 api: true
 ping: true
 
-# Configure logging to stdout (Docker-friendly)
-log:
-  level: DEBUG
-  format: json
+entryPoints:
+    web: # :80  – only used to redirect to HTTPS
+        address: ':80'
+        http:
+            redirections:
+                entryPoint:
+                    to: websecure
+                    scheme: https # 301 → https://
+    websecure: # :443 – real traffic terminates here
+        address: ':443'
 
-# Configure access logs to stdout
-accessLog:
-  format: json
 
 entryPoints:
   web: # :80  – only used to redirect to HTTPS
@@ -24,16 +31,22 @@ entryPoints:
     http:
       tls: {}
 certificatesResolvers:
-  cf:
-    acme:
-      email: "[email protected]"
-      storage: /etc/traefik/acme.json # will be created by Traefik
-      dnsChallenge:
-        provider: cloudflare # DNS‑01 → works even behind Cloudflare proxy
-        resolvers: ["1.1.1.1:53", "8.8.8.8:53"]
-        delayBeforeCheck: 0
+    cloudflare:
+        acme:
+            email: 'behzad.rabiei.77@gmail.com'
+            storage: /var/traefik/certs/cloudflare-acme.json
+            caServer: "https://acme-v02.api.letsencrypt.org/directory"
+            dnsChallenge:
+                provider: cloudflare # DNS‑01 → works even behind Cloudflare proxy
+                resolvers:
+                  - "1.1.1.1:53"
+                  - "8.8.8.8:53"
+
 providers:
-  docker:
-    exposedByDefault: false
-metrics:
-  prometheus: {}
+    docker:
+        exposedByDefault: false
+    # networks: x
+      file:
+    directory: /etc/traefik
+    watch: true
+
