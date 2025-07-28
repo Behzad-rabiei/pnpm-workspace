@@ -1,9 +1,9 @@
 global:
-  checkNewVersion: false
-  sendAnonymousUsage: false
+    checkNewVersion: false
+    sendAnonymousUsage: false
 
 log:
-  level: DEBUG
+    level: DEBUG
 
 api: true
 ping: true
@@ -24,15 +24,14 @@ certificatesResolvers:
         acme:
             email: 'behzad.rabiei.77@gmail.com'
             storage: /var/traefik/certs/cloudflare-acme.json
-            caServer: "https://acme-v02.api.letsencrypt.org/directory"
+            caServer: 'https://acme-v02.api.letsencrypt.org/directory'
             dnsChallenge:
                 provider: cloudflare # DNS‑01 → works even behind Cloudflare proxy
                 resolvers:
-                  - "1.1.1.1:53"
-                  - "8.8.8.8:53"
+                    - '1.1.1.1:53'
+                    - '8.8.8.8:53'
 
 providers:
     docker:
         exposedByDefault: false
-        networks: web
-
+        network: web
