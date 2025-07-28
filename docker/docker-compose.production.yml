@@ -1,38 +1,27 @@
-version: "3.9"
-
+version: '3.9'
 services:
-  ui:
-    image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:production
-    labels:
-      # Host rule for production
-      - traefik.http.routers.ui.rule=Host(`logid.xyz`)
-      # HTTPS configuration (from base)
-      - traefik.enable=true
-      - traefik.http.routers.ui.entrypoints=websecure
-      - traefik.http.routers.ui.tls.certresolver=cf
-      # Watchtower
-      - com.centurylinklabs.watchtower.enable=true
+    traefik:
+        labels:
+            - traefik.http.routers.traefik.rule=Host(`infra.example.com`) && (PathPrefix(`/traefik-dashboard`) || PathPrefix(`/api`))
+            - traefik.http.routers.traefik.entrypoints=web
+            - traefik.http.routers.traefik.service=api@internal
+            - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_USERS}
 
-  api:
-    image: ghcr.io/behzad-rabiei/pnpm-workspace/api:production
-    labels:
-      # Host rule for production
-      - traefik.http.routers.api.rule=Host(`api.logid.xyz`) && PathPrefix(`/api`)
-      # HTTPS configuration (from base)
-      - traefik.enable=true
-      - traefik.http.routers.api.middlewares=api-strip,api-cors
-      - traefik.http.services.api.loadbalancer.server.port=3000
-      - traefik.http.middlewares.api-strip.stripprefix.prefixes=/api
-      - traefik.http.middlewares.api-cors.headers.accesscontrolallowmethods=GET,OPTIONS,PUT,POST,DELETE
-      - traefik.http.middlewares.api-cors.headers.accesscontrolalloworiginlist=*
-      - traefik.http.routers.api.entrypoints=websecure
-      - traefik.http.routers.api.tls.certresolver=cf
-      # Watchtower
-      - com.centurylinklabs.watchtower.enable=true
+    ui:
+        image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:production
+        labels:
+            - traefik.http.routers.ui.rule=Host(`18.199.218.205`)
+            - com.centurylinklabs.watchtower.enable=true
 
-  #   workflows:
-  #     build: null
-  #     image: ghcr.io/behzad-rabiei/pnpm-workspace/workflows:production
-  #     restart: unless-stopped
-  #     labels:
-  #       - com.centurylinklabs.watchtower.enable=true
+    api:
+        image: ghcr.io/behzad-rabiei/pnpm-workspace/api:production
+        labels:
+            - traefik.http.routers.api.rule=Host(`18.199.218.205`) && PathPrefix(`/api`)
+            - com.centurylinklabs.watchtower.enable=true
+
+    #   workflows:
+    #     build: null
+    #     image: ghcr.io/behzad-rabiei/pnpm-workspace/workflows:production
+    #     restart: unless-stopped
+    #     labels:
+    #       - com.centurylinklabs.watchtower.enable=true
