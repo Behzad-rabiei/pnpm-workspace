@@ -1,9 +1,11 @@
 services:
     ui:
         environment:
-            - UI_DOMAIN=staging.logid.xyz
             - IMAGE_TAG=latest
+        labels:
+            traefik.http.routers.ui.rule: Host(`staging.logid.xyz`)
     api:
         environment:
-            - API_DOMAIN=api-staging.logid.xyz
             - IMAGE_TAG=latest
+        labels:
+            traefik.http.routers.api.rule: Host(`api-staging.logid.xyz`) && PathPrefix(`/api`)

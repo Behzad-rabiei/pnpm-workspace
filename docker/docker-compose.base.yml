@@ -12,7 +12,7 @@ services:
         container_name: traefik
         restart: unless-stopped
         ports: # expose both 80 & 443
-            # - '80:80'
+            - '80:80'
             - '443:443'
         env_file: .env # keeps CF_API_TOKEN, CF_API_EMAIL, ACME_EMAIL
         environment:
@@ -20,8 +20,8 @@ services:
             - TRAEFIK_CERTIFICATESRESOLVERS_cf_acme_email=${ACME_EMAIL}
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
-            - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
-            - ./traefik/acme.json:/etc/traefik/acme.json
+            - ./traefik.yml:/etc/traefik/traefik.yml:ro # Updated path
+            - ./acme.json:/etc/traefik/acme.json # Updated path
         networks: [web]
         command:
             # minimal CLI – everything else lives in traefik.yml
@@ -35,9 +35,9 @@ services:
         labels:
             <<: *common_labels
             traefik.http.routers.ui.rule: >
-                Host(`${UI_DOMAIN}`)      # injected from env file
+                Host(`${UI_DOMAIN}`)
             traefik.http.routers.ui.entrypoints: websecure
-            traefik.http.services.ui.loadbalancer.server.port: '3000'
+            traefik.http.services.ui.loadbalancer.server.port: '8080' # Changed from 3000 to 8080
 
     api: # Node / Express / etc.
         image: ghcr.io/behzad-rabiei/pnpm-workspace/api:${IMAGE_TAG}
