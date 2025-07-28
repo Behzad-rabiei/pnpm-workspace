@@ -157,7 +157,7 @@ pnpm test --coverage
 
 - 🧪 **Framework**: Vitest
 - 🛡️ **Coverage gate**: ≥ 50% (lines & branches) – enforced in CI
-- 🗂️ **Layout**: unit tests `*.spec.ts` adjacent to code; integration tests in `tests/` use Testcontainers.
+- 🗂️ **Layout**: unit tests `*.spec.ts` adjacent to code; integration tests in `tests/` use Testcontainers!
 
 ## 🤝 Contributing
 
