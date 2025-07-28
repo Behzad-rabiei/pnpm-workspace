@@ -1,28 +1,9 @@
-version: '3.9'
-
 services:
-    traefik:
-        labels:
-            - traefik.http.routers.traefik.rule=Host(`infra.example.com`) && (PathPrefix(`/traefik-dashboard`) || PathPrefix(`/api`))
-            - traefik.http.routers.traefik.entrypoints=web
-            - traefik.http.routers.traefik.service=api@internal
-            - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_USERS}
     ui:
-        image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:latest
-        labels:
-            - traefik.http.routers.ui.rule=Host(`54.93.81.139`)
-            - com.centurylinklabs.watchtower.enable=true
-
+        environment:
+            - UI_DOMAIN=staging.logid.xyz
+            - IMAGE_TAG=latest
     api:
-        image: ghcr.io/behzad-rabiei/pnpm-workspace/api:latest
-        restart: unless-stopped
-        labels:
-            - traefik.http.routers.api.rule=Host(`54.93.81.139`) && PathPrefix(`/api`)
-            - com.centurylinklabs.watchtower.enable=true
-
-    # workflows:
-    #   build: null
-    #   image: ghcr.io/behzad-rabiei/pnpm-workspace/workflows:latest
-    #   restart: unless-stopped
-    #   labels:
-    #     - com.centurylinklabs.watchtower.enable=true
+        environment:
+            - API_DOMAIN=api-staging.logid.xyz
+            - IMAGE_TAG=latest
