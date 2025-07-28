@@ -35,7 +35,7 @@ services:
 
     ui:
         container_name: ui
-        image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:${UI_TAG}
+        image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:${IMAGE_TAG}
         restart: unless-stopped
         networks: [web]
         labels:
@@ -48,7 +48,7 @@ services:
 
     api:
         container_name: api
-        image: ghcr.io/behzad-rabiei/pnpm-workspace/api:${API_TAG}
+        image: ghcr.io/behzad-rabiei/pnpm-workspace/api:${IMAGE_TAG}
         restart: unless-stopped
         networks: [web]
         labels:
