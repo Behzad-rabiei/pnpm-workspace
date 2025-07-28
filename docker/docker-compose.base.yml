@@ -1,7 +1,8 @@
 version: '3.9'
 
 networks:
-    web:
+    web: # <-- declare *external* network
+        external: true #      it already exists (or we’ll create it)
 
 services:
     traefik:
