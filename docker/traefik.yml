@@ -2,29 +2,13 @@ api: true
 ping: true
 
 providers:
-  docker:
-    exposedByDefault: false
+    docker:
+        exposedByDefault: false
 
 entryPoints:
-  web:
-    address: ":80"
-    http:
-      redirections:
-        entryPoint:
-          to: websecure
-          scheme: https
-
-  websecure:
-    address: ":443"
-
-certificatesResolvers:
-  cf:
-    acme:
-      email: behzad.rabiei.77@gmail.com
-      storage: /letsencrypt/acme.json
-      dnsChallenge:
-        provider: cloudflare
+    web:
+        address: ':80'
 
 metrics:
-  prometheus:
-    addRoutersLabels: true
+    prometheus:
+        addRoutersLabels: true
