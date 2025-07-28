@@ -15,10 +15,22 @@ services:
         environment:
             - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
         volumes:
-            - /run/docker.sock:/run/docker.sock:ro
-            - ./traefik.yml:/etc/traefik/:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - ./traefik.yml:/etc/traefik/traefik.yml:ro # Fixed path
             - ./certs/:/var/traefik/certs/:rw
         networks: [web]
+        healthcheck: # Added health check
+            test: ['CMD', 'traefik', 'healthcheck', '--ping']
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        labels: # Secure the dashboard
+            - traefik.enable=true
+            - traefik.http.routers.dashboard.rule=Host(`traefik.logid.xyz`)
+            - traefik.http.routers.dashboard.tls=true
+            - traefik.http.routers.dashboard.tls.certresolver=cloudflare
+            - traefik.http.routers.dashboard.entrypoints=websecure
+            - traefik.http.routers.dashboard.service=api@internal
 
     ui: # static assets / SPA
         image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:production

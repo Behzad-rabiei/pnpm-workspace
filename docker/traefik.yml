@@ -19,20 +19,6 @@ entryPoints:
     websecure: # :443 – real traffic terminates here
         address: ':443'
 
-
-entryPoints:
-  web: # :80  – only used to redirect to HTTPS
-    address: ":80"
-    http:
-      redirections:
-        entryPoint:
-          to: websecure
-          scheme: https # 301 → https://
-          permanent: true
-  websecure: # :443 – real traffic terminates here
-    address: ":443"
-    http:
-      tls: {}
 certificatesResolvers:
     cloudflare:
         acme:
@@ -48,5 +34,5 @@ certificatesResolvers:
 providers:
     docker:
         exposedByDefault: false
-    # networks: x
+        networks: web
 
