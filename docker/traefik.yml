@@ -1,3 +1,7 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
 api: true
 ping: true
 
@@ -9,21 +13,25 @@ entryPoints:
                 entryPoint:
                     to: websecure
                     scheme: https # 301 → https://
-                    permanent: true
     websecure: # :443 – real traffic terminates here
         address: ':443'
 
 certificatesResolvers:
-    cf:
+    cloudflare:
         acme:
-            email: '[email protected]'
-            storage: /etc/traefik/acme.json # will be created by Traefik
+            email: 'behzad.rabiei.77@gmail.com'
+            storage: /var/traefik/certs/cloudflare-acme.json
+            caServer: "https://acme-v02.api.letsencrypt.org/directory"
             dnsChallenge:
                 provider: cloudflare # DNS‑01 → works even behind Cloudflare proxy
-                resolvers: ['1.1.1.1:53', '8.8.8.8:53']
-                delayBeforeCheck: 0
+                resolvers:
+                  - "1.1.1.1:53"
+                  - "8.8.8.8:53"
+
 providers:
     docker:
         exposedByDefault: false
-metrics:
-    prometheus: {}
+    # networks: x
+      file:
+    directory: /etc/traefik
+    watch: true

@@ -20,8 +20,11 @@ Thumbs.db
 
 # Docker
 docker-compose.override.yml
-.env                # if you keep a root env
-*.local.env
+
+# ENV
+.env*
+**/.env*
+**/*.env
 
 # Husky
 .husky/

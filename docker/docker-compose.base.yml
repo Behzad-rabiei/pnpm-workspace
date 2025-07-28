@@ -1,52 +1,46 @@
 version: '3.9'
 
-x-common-labels: &common_labels
-    traefik.enable: 'true'
-
 networks:
     web:
 
 services:
     traefik:
-        image: traefik:v3.4
+        image: traefik:v3.5.0
         container_name: traefik
         restart: unless-stopped
         ports: # expose both 80 & 443
             - '80:80'
             - '443:443'
-        env_file: .env # keeps CF_API_TOKEN, CF_API_EMAIL, ACME_EMAIL
+        env_file: .env
         environment:
-            - CF_API_TOKEN=${CF_API_TOKEN}
-            - TRAEFIK_CERTIFICATESRESOLVERS_cf_acme_email=${ACME_EMAIL}
+            - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
         volumes:
-            - /var/run/docker.sock:/var/run/docker.sock:ro
-            - ./traefik.yml:/etc/traefik/traefik.yml:ro # Updated path
-            - ./acme.json:/etc/traefik/acme.json # Updated path
+            - /run/docker.sock:/run/docker.sock:ro
+            - ./traefik.yml:/etc/traefik/:ro
+            - ./certs/:/var/traefik/certs/:rw
         networks: [web]
-        command:
-            # minimal CLI – everything else lives in traefik.yml
-            - '--providers.docker'
-            - '--entrypoints.websecure.http.tls.certresolver=cf'
 
     ui: # static assets / SPA
-        image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:${IMAGE_TAG}
+        image: ghcr.io/behzad-rabiei/pnpm-workspace/ui:production
         restart: unless-stopped
         networks: [web]
         labels:
-            <<: *common_labels
-            traefik.http.routers.ui.rule: >
-                Host(`${UI_DOMAIN}`)
+            traefik.enable: 'true'
+            traefik.http.routers.ui.rule: Host(`logid.xyz`)
+            traefik.http.routers.ui.tls: true
+            traefik.http.routers.ui.tls.certresolver: cloudflare
             traefik.http.routers.ui.entrypoints: websecure
-            traefik.http.services.ui.loadbalancer.server.port: '8080' # Changed from 3000 to 8080
+            traefik.http.services.ui.loadbalancer.server.port: '8080'
 
     api: # Node / Express / etc.
-        image: ghcr.io/behzad-rabiei/pnpm-workspace/api:${IMAGE_TAG}
+        image: ghcr.io/behzad-rabiei/pnpm-workspace/api:production
         restart: unless-stopped
         networks: [web]
         labels:
-            <<: *common_labels
-            traefik.http.routers.api.rule: >
-                Host(`${API_DOMAIN}`) && PathPrefix(`/api`)
+            traefik.enable: 'true'
+            traefik.http.routers.api.rule: Host(`api.logid.xyz`) && PathPrefix(`/api`)
+            traefik.http.routers.api.tls: true
+            traefik.http.routers.api.tls.certresolver: cloudflare
             traefik.http.routers.api.entrypoints: websecure
             traefik.http.routers.api.middlewares: api-strip,api-cors
             traefik.http.services.api.loadbalancer.server.port: '3000'
