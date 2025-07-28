@@ -2,6 +2,9 @@ global:
   checkNewVersion: false
   sendAnonymousUsage: false
 
+log:
+  level: DEBUG
+
 api: true
 ping: true
 
@@ -46,7 +49,4 @@ providers:
     docker:
         exposedByDefault: false
     # networks: x
-      file:
-    directory: /etc/traefik
-    watch: true
 
