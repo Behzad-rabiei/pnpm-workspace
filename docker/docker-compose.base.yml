@@ -12,7 +12,7 @@ services:
         container_name: traefik
         restart: unless-stopped
         ports: # expose both 80 & 443
-            - '80:80'
+            # - '80:80'
             - '443:443'
         env_file: .env # keeps CF_API_TOKEN, CF_API_EMAIL, ACME_EMAIL
         environment:
