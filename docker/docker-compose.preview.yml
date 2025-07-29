@@ -59,7 +59,7 @@ services:
         networks: [web]
         labels:
             - traefik.enable=true
-            - traefik.http.routers.api.rule=Host(`${PULLPREVIEW_PUBLIC_DNS}`) && PathPrefix(`/api`)
+            - traefik.http.routers.api.rule=Host(`api.${PULLPREVIEW_PUBLIC_DNS}`)
             - traefik.http.routers.api.entrypoints=web
             - traefik.http.routers.api.middlewares=api-strip,api-cors
             - traefik.http.services.api.loadbalancer.server.port=3000
