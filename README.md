@@ -1,7 +1,6 @@
 # Reputo 🚀
 
-[![CI](https://github.com/behzad-rabiei/pnpm-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/behzad-rabiei/pnpm-workspace/actions/workflows/ci.yml)  
-[![Docker](https://github.com/behzad-rabiei/pnpm-workspace/actions/workflows/docker-release.yml/badge.svg)](https://github.com/behzad-rabiei/pnpm-workspace/actions/workflows/docker-release.yml)  
+[![CI](https://github.com/behzad-rabiei/pnpm-workspace/actions/workflows/main.yml/badge.svg)](https://github.com/behzad-rabiei/pnpm-workspace/actions/workflows/main.yml)  
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  
 [![Coverage Status](https://codecov.io/gh/behzad-rabiei/pnpm-workspace/branch/main/graph/badge.svg)](https://codecov.io/gh/behzad-rabiei/pnpm-workspace)
 
@@ -24,16 +23,14 @@
 2. [📁 Project Structure](#-project-structure)
 3. [🧩 Apps & Packages](#-apps--packages)
 4. [🛠️ Tooling & Conventions](#-tooling--conventions)
-5. [🔑 Environment Variables](#-environment-variables)
-6. [📦 Dependencies](#-dependencies)
-7. [⏳ Temporal Workflows](#-temporal-workflows)
-8. [📖 API Reference](#-api-reference)
-9. [🧪 Testing](#-testing)
-10. [🤝 Contributing](#-contributing)
-11. [🛡️ Code of Conduct & Security](#-code-of-conduct--security)
+5. [🌍 Environment Strategy](#-environment-strategy)
+6. [🔑 Environment Variables](#-environment-variables)
+7. [🐳 Docker & Infrastructure](#-docker--infrastructure)
+8. [🧪 Testing](#-testing)
+9. [🤝 Contributing](#-contributing)
+10. [🚢 Deployment & Release Process](#-deployment--release-process)
+11. [🏗️ Architecture](#-architecture)
 12. [📄 License](#-license)
-13. [🚢 Release Process](#-release-process)
-14. [🏗️ Architecture](#-architecture)
 
 ---
 
@@ -50,174 +47,341 @@ pnpm dev          # runs api, ui, workflows in parallel
 
 ### 🐳 Local development (Docker Compose)
 
-```bash
-docker compose up --build   # api :3000, ui :8080, temporal-web :8000
-```
-
-### ✅ One-liner sanity check
+#### Full local stack with services
 
 ```bash
-curl http://localhost:3000/healthz   # NestJS liveness probe
-open http://localhost:8080           # React dashboard
+# Complete local environment with PostgreSQL, Redis, Temporal
+docker compose -f docker/docker-compose.local.yml up --build
+
+# Services available at:
+# - API: http://localhost:3000
+# - UI: http://localhost:8080
 ```
+
+#### Production-like setup
+
+```bash
+# Staging/production environment setup
+docker compose -f docker/docker-compose.yml up --build
+```
+
+### ✅ Quick health checks
+
+```bash
+# Local development
+curl http://localhost:3000/healthz   # NestJS API health
+open http://localhost:8080           # React UI
+
+# Preview environment
+curl https://api.${PULLPREVIEW_PUBLIC_DNS}/healthz
+open https://${PULLPREVIEW_PUBLIC_DNS}
+```
+
+---
 
 ## 📁 Project Structure
 
 ```
 pnpm-workspace/
 ├── apps/
-│   ├── api/
-│   ├── ui/
-│   └── workflows/
+│   ├── api/                 # NestJS API server
+│   ├── ui/                  # React + Vite frontend
+│   └── workflows/           # Temporal workflows
 ├── packages/
-│   └── reputation-algorithms/
+│   └── reputation-algorithms/  # Pure TypeScript algorithms
+├── docker/
+│   ├── docker-compose.yml              # Production/staging setup
+│   ├── docker-compose.preview.yml      # Preview environment
+│   ├── docker-compose.local.yml        # Local development with services
+│   ├── Dockerfile                      # Multi-stage build
+│   ├── traefik.yml                     # Reverse proxy config
+│   └── .env                            # Environment template
 ├── .github/
-├── .changeset/
-├── node_modules/
-├── Dockerfile
-├── docker-compose.yml
-├── package.json
-├── pnpm-workspace.yaml
-├── pnpm-lock.yaml
-├── biome.json
-├── lefthook.yml
-├── commitlint.config.mjs
-├── vitest.config.ts
-├── tsconfig.base.json
-├── tsconfig.vitest.json
-└── .gitignore
+│   └── workflows/           # CI/CD pipelines
+├── coverage/                # Test coverage reports
+├── node_modules/           # pnpm workspace dependencies
+├── package.json            # Root workspace config
+├── pnpm-workspace.yaml     # Workspace definition
+├── biome.json             # Linting & formatting
+├── lefthook.yml           # Git hooks
+├── vitest.config.ts       # Test runner config
+└── tsconfig.base.json     # Shared TypeScript config
 ```
+
+---
 
 ## 🧩 Apps & Packages
 
-| 📂 Path                          | 🛠️ Stack                                                                                                                                                                             | 📝 Notes                 |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------ |
-| `apps/api`                       | ![nestjs](https://img.shields.io/badge/-NestJS-E0234E?logo=nestjs&logoColor=white&style=flat)                                                                                        | Swagger at `/api/docs`   |
-| `apps/ui`                        | ![react](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=black&style=flat) + ![vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white&style=flat) | Lightweight dashboard    |
-| `apps/workflows`                 | ![typescript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat) + Temporal SDK                                                             | Durable background jobs  |
-| `packages/reputation-algorithms` | ![typescript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat)                                                                            | Pure algorithms – no I/O |
+| 📂 Path                          | 🛠️ Stack                                                                                                                                                                             | 📝 Notes                    |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------- |
+| `apps/api`                       | ![nestjs](https://img.shields.io/badge/-NestJS-E0234E?logo=nestjs&logoColor=white&style=flat)                                                                                        | REST API with health checks |
+| `apps/ui`                        | ![react](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=black&style=flat) + ![vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white&style=flat) | Single-page application     |
+| `apps/workflows`                 | ![typescript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat)                                                                            | Durable background jobs     |
+| `packages/reputation-algorithms` | ![typescript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat)                                                                            | Pure algorithms – no I/O    |
+
+---
 
 ## 🛠️ Tooling & Conventions
 
-- 🏗️ **Monorepo**: pnpm workspaces
-- 🧪 **Test runner**: Vitest (monorepo-wide)
-- 🎨 **Lint/Format**: Biome
-- 🪝 **Git hooks**: Lefthook → pre-commit = pnpm check, pre-push = pnpm check && pnpm test, commit-msg = Commitlint
-- 🏷️ **Versioning**: Changesets → auto PRs
-- 🐳 **Containers**: Docker & Docker Compose
-- 🤖 **CI/CD**: GitHub Actions (ci.yml, docker-release.yml, changeset.yml)
+- 🏗️ **Monorepo**: pnpm workspaces with workspace protocol
+- 🧪 **Test runner**: Vitest (monorepo-wide coverage)
+- 🎨 **Lint/Format**: Biome (replaces ESLint + Prettier)
+- 🪝 **Git hooks**: Lefthook → pre-commit checks, commit-msg validation
+- 🏷️ **Versioning**: Semantic Release with conventional commits
+- 🐳 **Containers**: Multi-stage Docker builds + Traefik proxy
+- 🔄 **CI/CD**: GitHub Actions with quality gates
+- 🌿 **Branching**: GitHub Flow (feature branches → main)
+
+---
+
+## 🌍 Environment Strategy
+
+We follow a three-tier deployment strategy:
+
+### 🔍 Preview Environment (Pull Requests)
+
+- **Trigger**: Adding `pullpreview` label to PRs
+- **Infrastructure**: AWS Lightsail (auto-provisioned)
+- **URL**: Dynamic subdomain via PullPreview
+- **Cleanup**: Auto-expires after 24h or PR closure
+
+### 🧪 Staging Environment
+
+- **Trigger**: Merge to `main` branch
+- **URL**:
+    - UI: [staging.logid.xyz](https://staging.logid.xyz)
+    - API: [api-staging.logid.xyz](https://api-staging.logid.xyz)
+    - Traefik: [traefik-staging.logid.xyz/dashboard](https://traefik-staging.logid.xyz/dashboard)
+- **Deployment**: Watchtower auto-pulls latest images
+
+### 🚀 Production Environment
+
+- **Trigger**: Manual workflow dispatch with commit SHA
+- **URL**:
+    - UI: [logid.xyz](https://logid.xyz)
+    - API: [api.logid.xyz](https://api.logid.xyz)
+    - Traefik: [traefik.logid.xyz/dashboard](https://traefik.logid.xyz/dashboard)
+- **Process**: Promotes staging images with production tags
+
+---
 
 ## 🔑 Environment Variables
 
-Create a `.env` in the repo root (or copy `.env.example`):
+### Docker Environment (.env)
 
-| Variable           | Purpose                      | Default (dev)                                    |
-| ------------------ | ---------------------------- | ------------------------------------------------ |
-| `DATABASE_URL`     | PostgreSQL connection string | `postgres://reputo:reputo@localhost:5432/reputo` |
-| `TEMPORAL_ADDRESS` | Temporal gRPC host:port      | `localhost:7233`                                 |
-| `JWT_SECRET`       | API auth signing key         | `changeme-in-prod`                               |
-| `REDIS_URL`        | Redis connection (optional)  | `redis://localhost:6379`                         |
+Create a `.env` file in the `docker/` directory:
 
-## 📦 Dependencies
+| Variable           | Purpose                         | Example                      |
+| ------------------ | ------------------------------- | ---------------------------- |
+| `UI_DOMAIN`        | Frontend domain                 | `staging.logid.xyz`          |
+| `API_DOMAIN`       | Backend API domain              | `api-staging.logid.xyz`      |
+| `TRAEFIK_DOMAIN`   | Traefik dashboard domain        | `traefik-staging.logid.xyz`  |
+| `TRAEFIK_AUTH`     | Dashboard basic auth (htpasswd) | `admin:$2y$10$...`           |
+| `IMAGE_TAG`        | Docker image tag                | `main-abc123` / `production` |
+| `CF_DNS_API_TOKEN` | Cloudflare DNS API token        | `your-cloudflare-token`      |
 
-| Service            | Version | Dev startup command                       |
-| ------------------ | ------- | ----------------------------------------- |
-| 🐘 PostgreSQL      | 16      | `docker compose up db`                    |
-| ⏳ Temporal Server | 1.27    | `docker compose up temporal temporal-web` |
-| 🟢 Redis (opt.)    | latest  | `docker compose up redis`                 |
+### Development Environment
 
-## ⏳ Temporal Workflows
+| Variable       | Purpose                      | Default (dev) |
+| -------------- | ---------------------------- | ------------- |
+| `PORT`         | API server port              | `3000`        |
+| `DATABASE_URL` | PostgreSQL connection string | `postgres://  |
 
-```bash
-# start server & web UI (ports 7233 / 8000)
-docker compose up temporal temporal-web
+---
 
-# run the worker
-pnpm start:temporal
+## 🐳 Docker & Infrastructure
+
+### Multi-stage Dockerfile
+
+Our `docker/Dockerfile` uses a multi-stage build process:
+
+- **Base**: Node.js 20 with pnpm
+- **Build**: Install deps, build all apps, deploy to isolated directories
+- **Runtime**: Separate lightweight images for `api`, `ui`, and `workflows`
+
+### Traefik Reverse Proxy
+
+- **TLS**: Automatic HTTPS with Let's Encrypt (Cloudflare DNS challenge)
+- **Routing**: Domain-based routing with middleware support
+- **Dashboard**: Protected with basic authentication
+- **Health checks**: Built-in health monitoring
+
+### Container Registry
+
+Images are published to GitHub Container Registry:
+
+```
+ghcr.io/behzad-rabiei/pnpm-workspace/api:${TAG}
+ghcr.io/behzad-rabiei/pnpm-workspace/ui:${TAG}
+ghcr.io/behzad-rabiei/pnpm-workspace/workflows:${TAG}
 ```
 
-Browse [http://localhost:8000](http://localhost:8000) to watch executions. Worker code resides in `apps/workflows/`.
+### Watchtower Auto-deployment
 
-## 📖 API Reference
+- Monitors for new images with matching tags
+- Rolling restart strategy
+- Cleanup of old images
+- 60-second polling interval
 
-- **Swagger UI**: [http://localhost:3000/api/docs](http://localhost:3000/api/docs)
-- **OpenAPI JSON**: [http://localhost:3000/api-json](http://localhost:3000/api-json)
-
-Re-generate spec:
-
-```bash
-pnpm --filter @reputo/api run build
-```
+---
 
 ## 🧪 Testing
 
 ```bash
-pnpm test --coverage
+# Run all tests
+pnpm test
+
+# Run with coverage
+pnpm ci:test
+
+# Watch mode for development
+pnpm test --watch
 ```
 
-- 🧪 **Framework**: Vitest
-- 🛡️ **Coverage gate**: ≥ 50% (lines & branches) – enforced in CI
-- 🗂️ **Layout**: unit tests `*.spec.ts` adjacent to code; integration tests in `tests/` use Testcontainers!
+- 🧪 **Framework**: Vitest with SWC compilation
+- 🛡️ **Coverage**: V8 coverage provider
+- 🗂️ **Layout**: Tests adjacent to source files (`*.spec.ts`)
+- 📊 **Reporting**: Coverage reports in `coverage/` directory
+
+---
 
 ## 🤝 Contributing
 
-### 🌳 Branch strategy
+### 🌿 Branching Strategy: GitHub Flow
 
-We follow trunk-based development: feature branches fork from main, open a PR, and are squash-merged after review.
+1. **Create feature branch** from `main`
 
-### 📝 Commit messages
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
 
-Conventional Commits via Commitizen:
+2. **Make changes** with conventional commits
 
-```text
-feat(api): add reputation snapshot endpoint
-fix(workflows): handle zero-balance edge case
+    ```bash
+    git commit -m "feat(api): add user authentication endpoint"
+    ```
+
+3. **Open Pull Request** to `main`
+    - Add `pullpreview` label for preview deployment
+    - Ensure CI passes (quality gate + tests)
+    - Request review from maintainers
+
+4. **Merge** after approval (squash merge preferred)
+
+### 📝 Commit Convention
+
+We use [Conventional Commits](https://conventionalcommits.org/):
+
+```
+feat(scope): add new feature
+fix(scope): bug fix
+docs(scope): documentation update
+style(scope): formatting changes
+refactor(scope): code refactoring
+test(scope): add or update tests
+chore(scope): maintenance tasks
 ```
 
-### ✅ Pull-request checklist
+### ✅ Pull Request Checklist
 
-- [ ] `pnpm check` and `pnpm test` succeed
-- [ ] Coverage ≥ 50 %
-- [ ] Docs & Swagger updated if endpoints changed
-- [ ] At least one reviewer from @reputo/maintainers
+- [ ] `pnpm check` passes (lint + format)
+- [ ] `pnpm test` passes with adequate coverage
+- [ ] Documentation updated if needed
+- [ ] PR has descriptive title and body
+- [ ] At least one reviewer approval
 
-## 🛡️ Code of Conduct & Security
+---
 
-This project adheres to the [Contributor Covenant v2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
+## 🚢 Deployment & Release Process
 
-Found a vulnerability? E-mail [security@reputo.dev](mailto:security@reputo.dev) – we reply within three business days.
+### Automated Staging Deployment
+
+1. **Merge to main** → triggers quality gate
+2. **Quality gate passes** → builds and pushes images
+3. **Watchtower detects** new images → rolling deployment
+4. **Verification** → staging environment updated
+
+### Manual Production Promotion
+
+1. **Verify staging** environment is stable
+2. **Trigger promotion** workflow with commit SHA:
+    ```bash
+    gh workflow run promote-production.yml -f commit=abc123...
+    ```
+3. **Watchtower deployment** → production updated
+4. **Health checks** → verify deployment success
+
+### Image Tagging Strategy
+
+- **Staging**: `latest` (auto-deployed from main branch)
+- **Production**: `production` (promoted from staging)
+- **Versioned**: `main-{commit-sha}` for specific releases
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+flowchart TB
+    subgraph "🌐 Internet"
+        User[👤 User]
+    end
+
+    subgraph "☁️ Cloudflare"
+        CF[DNS + Proxy]
+    end
+
+    subgraph "🖥️ Server Infrastructure"
+        subgraph "🔀 Traefik (Reverse Proxy)"
+            LB[Load Balancer<br/>SSL Termination]
+        end
+
+        subgraph "📦 Application Containers"
+            UI[🖼️ React UI<br/>Port 8080]
+            API[⚙️ NestJS API<br/>Port 3000]
+            WF[⏱️ Workflows<br/>Temporal]
+        end
+
+        subgraph "🔄 Infrastructure"
+            WT[🐋 Watchtower<br/>Auto-deploy]
+        end
+    end
+
+    subgraph "📊 External Services"
+        GHCR[📦 GitHub Container Registry]
+        TEMP[⏳ Temporal Server]
+        DB[(🗄️ Database)]
+    end
+
+    User --> CF
+    CF --> LB
+    LB --> UI
+    LB --> API
+    API --> WF
+    WF --> TEMP
+    WF --> DB
+    WT --> GHCR
+    WT --> UI
+    WT --> API
+    WT --> WF
+```
+
+### Component Responsibilities
+
+- **🔀 Traefik**: TLS termination, domain routing, load balancing
+- **🖼️ UI**: React SPA served as static files
+- **⚙️ API**: NestJS REST API with health checks
+- **⏱️ Workflows**: Temporal-based background job processing
+- **🐋 Watchtower**: Automated container updates
+- **📦 GHCR**: Container image registry
+
+---
 
 ## 📄 License
 
 Released under the MIT License. See [LICENSE](LICENSE) for details.
 
-## 🚢 Release Process
-
-1. Merge PRs into main.
-2. Workspace CI runs checks and build.
-3. On success, Docker Release workflow pushes images to GHCR:
-
-    ```bash
-    ghcr.io/behzad-rabiei/pnpm-workspace/{api|ui|workflows}:latest
-    ```
-
-4. Changesets opens a release PR when version bumps are required.
-
-## 🏗️ Architecture
-
-```mermaid
-flowchart LR
-  subgraph Browser / User
-    UI[React 19 App]
-  end
-  UI -->|REST / GraphQL| APIGW((API Gateway))
-  APIGW --> NestAPI[NestJS API]
-  NestAPI -->|gRPC| Temporal[Temporal Server]
-  Temporal --> Worker[Workflows<br/>TypeScript]
-  Worker -->|writes| Postgres[(PostgreSQL)]
-  Worker -->|caches| Redis[(Redis)]
-  style Temporal fill:#fafafa,stroke:#333,stroke-dasharray:5 5
-```
+---
 
 ## Team
 

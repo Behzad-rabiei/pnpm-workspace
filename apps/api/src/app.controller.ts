@@ -11,9 +11,8 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('/mamadd')
-  getHello1(): string {
-    console.log('dsd');
-    return this.appService.getHello();
+  @Get('healthz')
+  getHealth() {
+    return this.appService.getHealth();
   }
 }

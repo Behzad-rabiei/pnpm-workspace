@@ -8,8 +8,8 @@
         "apps/*"
     ],
     "scripts": {
-        "dev": "pnpm --filter=apps/ -r --parallel dev",
-        "start": "pnpm -r --parallel start",
+        "dev": "pnpm --filter \"./apps/*\" --parallel dev",
+        "start": "pnpm --filter \"./apps/*\" --parallel start",
         "build": "pnpm -r build",
         "check": "pnpm -r --parallel check",
         "lint": "pnpm -r --parallel lint",
