@@ -2,20 +2,22 @@ name: main 🚢
 run-name: main 🚢
 
 on:
-    push:
-        branches: [main]
+  push:
+    branches: [main]
 
 concurrency:
-    group: ci-${{ github.ref }}
-    cancel-in-progress: true
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-    quality-gate:
-        uses: ./.github/workflows/_quality-gate.yml
+  quality-gate:
+    uses: ./.github/workflows/_quality-gate.yml
 
-    build-and-push:
-        needs: quality-gate
-        uses: ./.github/workflows/_build-and-push.yml
-        with:
-            ref: ${{ github.sha }}
-            push: true
+  build-and-push:
+    needs: quality-gate
+    environment: production
+    environment_url: https://logid.xyz
+    uses: ./.github/workflows/_build-and-push.yml
+    with:
+      ref: ${{ github.sha }}
+      push: true
