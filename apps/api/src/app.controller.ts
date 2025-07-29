@@ -11,7 +11,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('healthz')
+  @Get('healthzz')
   getHealth() {
     return this.appService.getHealth();
   }
