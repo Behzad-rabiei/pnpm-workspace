@@ -1,61 +1,21 @@
-# .github/workflows/pull‑request‑and‑preview.yml
-name: PR CI & Preview 🚀
-run-name: PR CI & Preview 🚀
+name: Pull Request 🔍️
+run-name: Pull Request 🔍️
 
 on:
     pull_request:
         branches: [main]
-        types: [opened, synchronize, reopened, labeled, unlabeled, closed]
 
 concurrency:
-    group: ci-${{ github.event.pull_request.number }}
+    group: 'ci-${{ github.event.pull_request.number || github.ref }}'
     cancel-in-progress: true
 
-################################################################################
-# 1) Quality‑gate (runs only on real code changes)                              #
-################################################################################
 jobs:
     quality-gate:
-        if: ${{ contains(fromJson('["opened","synchronize","reopened"]'), github.event.action) }}
         uses: ./.github/workflows/_quality-gate.yml
 
-    ################################################################################
-    # 2) Build (depends on quality‑gate, same guard)                                #
-    ################################################################################
     build:
         needs: quality-gate
-        if: ${{ needs.quality-gate.result == 'success' }}
         uses: ./.github/workflows/_build-and-push.yml
         with:
             ref: ${{ github.sha }}
             push: false
-
-    ################################################################################
-    # 3) Pull‑preview (needs build)                                                 #
-    ################################################################################
-    pull-preview:
-        name: Pull Preview 👀
-        needs: build
-        runs-on: ubuntu-latest
-        if: ${{ true }}
-        timeout-minutes: 30
-        permissions:
-            contents: read
-            deployments: write
-            pull-requests: write
-            statuses: write
-        steps:
-            - uses: actions/checkout@v4
-
-            - uses: pullpreview/action@v5
-              with:
-                  always_on: main
-                  label: pullpreview
-                  provider: lightsail
-                  instance_type: micro
-                  compose_files: docker/docker-compose.preview.yml
-                  ttl: 24h
-              env:
-                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  AWS_REGION: us-east-1
