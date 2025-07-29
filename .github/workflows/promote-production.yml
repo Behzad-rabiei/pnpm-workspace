@@ -53,3 +53,10 @@ jobs:
           docker push ${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:production
 
           echo "Successfully promoted ${{ matrix.image }} to production"
+
+      - name: Wait for Watchtower to pull the new image
+        run: sleep 90
+
+      - name: “✅ Deployment should now be live”
+        run: |
+          echo "✅ Your app should be up at ${{ job.environment.url }}"
