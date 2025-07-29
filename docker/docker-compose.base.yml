@@ -28,7 +28,7 @@ services:
       - traefik.http.routers.traefik.rule=Host(`${TRAEFIK_DOMAIN}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
       - traefik.http.routers.traefik.service=api@internal
       - traefik.http.routers.traefik.middlewares=auth
-      - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_AUTH}
+      - traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_AUTH}
       - traefik.http.routers.traefik.entrypoints=websecure
       - traefik.http.routers.traefik.tls=true
       - traefik.http.routers.traefik.tls.certresolver=cloudflare
