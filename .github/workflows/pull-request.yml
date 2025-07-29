@@ -1,11 +1,10 @@
 # .github/workflows/pull‑request‑and‑preview.yml
 name: PR CI & Preview 🚀
+run-name: PR CI & Preview 🚀
 
 on:
     pull_request:
         branches: [main]
-        # We still listen to label / close events so the preview can be (re)deployed
-        # or destroyed, but the code‑related jobs will self‑skip on those events.
         types: [opened, synchronize, reopened, labeled, unlabeled, closed]
 
 concurrency:
@@ -40,13 +39,11 @@ jobs:
         needs: build # <-- guarantees a successful build first
         runs-on: ubuntu-latest
         # Only deploy when the PR has (or just received) the `pullpreview` label.
-        if: >
-            ${{
-              (needs.build.result == 'success' || needs.build.result == 'skipped') &&
-              github.event_name == 'pull_request' &&
-              (github.event.label.name == 'pullpreview' ||
-              contains(github.event.pull_request.labels.*.name, 'pullpreview'))
-            }}
+        if: (needs.build.result == 'success' || needs.build.result == 'skipped') && (
+            github.event_name == 'pull_request' &&
+            (github.event.label.name == 'pullpreview' ||
+            contains(github.event.pull_request.labels.*.name, 'pullpreview'))
+        )
         timeout-minutes: 30
         permissions:
             contents: read
