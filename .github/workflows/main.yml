@@ -19,6 +19,17 @@ jobs:
     with:
       ref: ${{ github.sha }}
       push: true
+
+  deploy-staging:
+    name: deploy-staging
+    needs: build-and-push
+    runs-on: ubuntu-latest
     environment:
       name: staging
       url: https://staging.logid.xyz
+    steps:
+      - name: Wait for Watchtower to pull the new image
+        run: sleep 120
+      - name: “✅ Deployment should now be live”
+        run: |
+          echo "✅ Your app should be up at ${{ job.environment.url }}"
