@@ -1,21 +1,76 @@
-name: Pull Request 🔍️
-run-name: Pull Request 🔍️
+# .github/workflows/pull‑request‑and‑preview.yml
+name: PR CI & Preview 🚀
 
 on:
     pull_request:
         branches: [main]
+        # We still listen to label / close events so the preview can be (re)deployed
+        # or destroyed, but the code‑related jobs will self‑skip on those events.
+        types: [opened, synchronize, reopened, labeled, unlabeled, closed]
 
 concurrency:
-    group: 'ci-${{ github.event.pull_request.number || github.ref }}'
+    group: ci-${{ github.event.pull_request.number }}
     cancel-in-progress: true
 
+################################################################################
+# 1) Quality‑gate (runs only on real code changes)                              #
+################################################################################
 jobs:
     quality-gate:
+        if: >
+            ${{
+              github.event_name == 'pull_request' &&
+              (github.event.action == 'opened' ||
+               github.event.action == 'synchronize' ||
+               github.event.action == 'reopened') &&
+              github.event.pull_request.changed_files > 0
+            }}
         uses: ./.github/workflows/_quality-gate.yml
 
+    ################################################################################
+    # 2) Build (depends on quality‑gate, same guard)                                #
+    ################################################################################
     build:
         needs: quality-gate
+        # Build runs only when quality‑gate actually ran and succeeded.
+        if: ${{ needs.quality-gate.result == 'success' }}
         uses: ./.github/workflows/_build-and-push.yml
         with:
             ref: ${{ github.sha }}
             push: false
+
+    ################################################################################
+    # 3) Pull‑preview (needs build)                                                 #
+    ################################################################################
+    pull-preview:
+        name: Pull Preview 👀
+        needs: build # <-- guarantees a successful build first
+        runs-on: ubuntu-latest
+        # Only deploy when the PR has (or just received) the `pullpreview` label.
+        if: >
+            ${{
+              github.event_name == 'pull_request' &&
+              (github.event.label.name == 'pullpreview' ||
+               contains(github.event.pull_request.labels.*.name, 'pullpreview'))
+            }}
+        timeout-minutes: 30
+        permissions:
+            contents: read
+            deployments: write
+            pull-requests: write
+            statuses: write
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: pullpreview/action@v5
+              with:
+                  always_on: main
+                  label: pullpreview
+                  provider: lightsail
+                  instance_type: micro
+                  compose_files: docker/docker-compose.preview.yml
+                  ttl: 24h
+              env:
+                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  AWS_REGION: us-east-1
