@@ -15,10 +15,10 @@ jobs:
 
   build-and-push:
     needs: quality-gate
-    environment:
-      name: production
-      url: https://logid.xyz
     uses: ./.github/workflows/_build-and-push.yml
     with:
       ref: ${{ github.sha }}
       push: true
+    environment:
+      name: staging
+      url: https://staging.logid.xyz
