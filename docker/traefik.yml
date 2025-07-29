@@ -5,7 +5,7 @@ global:
 log:
     level: DEBUG
 
-api: { dashboard: true }
+api: { dashboard: true, insecure: false }
 ping: true
 
 entryPoints:
