@@ -40,6 +40,7 @@
 
 ```bash
 pnpm install      # install workspace deps
+npx lefthook install  # install git hooks
 pnpm dev          # runs api, ui, workflows in parallel
 ```
 
