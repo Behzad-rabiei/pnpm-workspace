@@ -26,11 +26,6 @@ services:
             - --entrypoints.web.address=:80
             - --metrics.prometheus=true
             - --metrics.prometheus.addRoutersLabels=true
-        labels:
-            - traefik.enable=true
-            - traefik.http.routers.traefik.rule=Host(`${PULLPREVIEW_PUBLIC_DNS}`) && (PathPrefix(`/traefik-dashboard`) || PathPrefix(`/api`))
-            - traefik.http.routers.traefik.entrypoints=web
-            - traefik.http.routers.traefik.service=api@internal
 
     ui:
         container_name: ui
