@@ -40,6 +40,7 @@
 
 ```bash
 pnpm install      # install workspace deps
+npx lefthook install  # install git hooks
 pnpm dev          # runs api, ui, workflows in parallel
 ```
 
@@ -319,53 +320,6 @@ chore(scope): maintenance tasks
 
 ---
 
-## 🏗️ Architecture
-
-```mermaid
-flowchart TB
-    subgraph "🌐 Internet"
-        User[👤 User]
-    end
-
-    subgraph "☁️ Cloudflare"
-        CF[DNS + Proxy]
-    end
-
-    subgraph "🖥️ Server Infrastructure"
-        subgraph "🔀 Traefik (Reverse Proxy)"
-            LB[Load Balancer<br/>SSL Termination]
-        end
-
-        subgraph "📦 Application Containers"
-            UI[🖼️ React UI<br/>Port 8080]
-            API[⚙️ NestJS API<br/>Port 3000]
-            WF[⏱️ Workflows<br/>Temporal]
-        end
-
-        subgraph "🔄 Infrastructure"
-            WT[🐋 Watchtower<br/>Auto-deploy]
-        end
-    end
-
-    subgraph "📊 External Services"
-        GHCR[📦 GitHub Container Registry]
-        TEMP[⏳ Temporal Server]
-        DB[(🗄️ Database)]
-    end
-
-    User --> CF
-    CF --> LB
-    LB --> UI
-    LB --> API
-    API --> WF
-    WF --> TEMP
-    WF --> DB
-    WT --> GHCR
-    WT --> UI
-    WT --> API
-    WT --> WF
-```
-
 ### Component Responsibilities
 
 - **🔀 Traefik**: TLS termination, domain routing, load balancing
@@ -379,7 +333,7 @@ flowchart TB
 
 ## 📄 License
 
-Released under the MIT License. See [LICENSE](LICENSE) for details.
+Released under the GPL-3.0 license.
 
 ---
 
