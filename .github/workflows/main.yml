@@ -15,8 +15,9 @@ jobs:
 
   build-and-push:
     needs: quality-gate
-    environment: production
-    environment_url: https://logid.xyz
+    environment:
+      name: production
+      url: https://logid.xyz
     uses: ./.github/workflows/_build-and-push.yml
     with:
       ref: ${{ github.sha }}

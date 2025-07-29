@@ -20,8 +20,9 @@ env:
 jobs:
   promote:
     runs-on: ubuntu-latest
-    environment: production
-    environment_url: https://logid.xyz
+    environment:
+      name: production
+      url: https://logid.xyz
     strategy:
       matrix:
         image: [api, ui, workflows]
