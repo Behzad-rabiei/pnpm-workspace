@@ -1,28 +1,16 @@
-name: main 🚢
-run-name: main 🚢
+name: Release 📝
+
+run-name: Release 📝
 
 on:
-    push:
+    workflow_run:
+        workflows: [Quality Gate 🛡️]
+        types: [completed]
         branches: [main]
-
-concurrency:
-    group: ci-${{ github.ref }}
-    cancel-in-progress: true
-
 jobs:
-    quality-gate:
-        uses: ./.github/workflows/_quality-gate.yml
-
-    build-and-push:
-        needs: quality-gate
-        uses: ./.github/workflows/_build-and-push.yml
-        with:
-            ref: ${{ github.sha }}
-            push: true
-
     release:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         name: 'Release 📝'
-        needs: build-and-push
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
@@ -50,20 +38,3 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NPM_CONFIG_WORKSPACES: 'false'
                   NPM_CONFIG_WORKSPACES_UPDATE: 'false'
-
-    wait-for-watchtower:
-        name: wait-for-watchtower
-        needs: build-and-push
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                os: [ubuntu-latest]
-        environment:
-            name: staging
-            url: https://staging.logid.xyz
-        steps:
-            - name: Wait for Watchtower to pull the new image
-              run: sleep 90
-            - name: '✅ Deployment should now be live'
-              run: |
-                  echo "✅ Your app should be up at ${{ job.environment.url }}"
