@@ -19,7 +19,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_PREFIX: ghcr.io/behzad-rabiei/pnpm-workspace
+  IMAGE_PREFIX: ghcr.io/togethercrew/reputo
 
 jobs:
   promote:
